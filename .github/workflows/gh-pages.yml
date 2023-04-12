@@ -3,7 +3,7 @@ name: mdbook build-deploy
 on:   
   push:
     branches:
-      - gh-pages
+      - gh-pages-src
 
 jobs:
   deploy:
