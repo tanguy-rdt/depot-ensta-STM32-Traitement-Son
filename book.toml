@@ -1,6 +1,11 @@
 [book]
-authors = ["tanguy-rdt"]
-language = "en"
+authors = ["Baptiste LE ROUX", "Melvin DUBEE", "Tanguy ROUDAUT"]
+language = "fr"
 multilingual = false
 src = "src"
 title = "Project SA4 STM32 - Traitement du son"
+
+
+[output.html]
+git-repository-url = "https://gitlab.ensta-bretagne.fr/roudauta/depot-STM32-Traitement-Son"
+git-repository-icon = "fa-gitlab"
