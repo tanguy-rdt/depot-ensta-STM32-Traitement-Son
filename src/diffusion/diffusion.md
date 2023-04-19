@@ -24,9 +24,9 @@ On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 ind
 
 <p align="center">
 
-  <img src="./.img\DAC_config.png" alt="screenV0" width="350" height="350" >
+  <img src="./.img/DAC_config.png" alt="screenV0" width="350" height="350" >
 
-  <img src="./.img\DAC_config2.png" alt="screenV0" width="350" height="350">
+  <img src="./.img/DAC_config2.png" alt="screenV0" width="350" height="350">
 
 </p>
 Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
