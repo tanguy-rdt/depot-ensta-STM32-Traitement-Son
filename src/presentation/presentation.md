@@ -1,4 +1,4 @@
-# Presentation
+# Présentation
 
 ## Explication du projet
 
@@ -13,7 +13,7 @@ Après avoir atteint une certaine maitrises de ces différents aspects nous avon
 ![](./img/schéma_gen.png)
 
 
-## Materiel
+## Matériel
 
 Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.
 
