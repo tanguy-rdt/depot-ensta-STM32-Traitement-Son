@@ -149,7 +149,42 @@
                 <div id="content" class="content">
                     <main>
                         <div style="break-before: page; page-break-before: always;"></div><h1 id="acquisition"><a class="header" href="#acquisition">Acquisition</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>#Diffusion</p>
+<p>La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAc via le DMA et générer le signal vers une sortie audio, casque, hauts-parleurs... </p>
+<p>##Methodes utilisation du DAC</p>
+<p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc</p>
+<p>Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). </p>
+<p>##Methodes amplificateur</p>
+<p>Le signal de sortie peut être amplifié pour améliorer la qualité sonore. On utilise un amplificateur en spécifiant un gain. Toutefois il est nécessaire de veiller à ne pas dépasser la limite, sous peine de saturer l'amplificateur.</p>
+<p>##Mise en pratique</p>
+<p>Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :</p>
+<h3 id="configuration-du-setup"><a class="header" href="#configuration-du-setup">Configuration du setup</a></h3>
+<p>On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré,</p>
+<p><img src="diffusion/./img/Setup_DAC.png" alt="" /></p>
+<p>Une fois la configuration enregistré, nous pouvons générer le code.</p>
+<h3 id="ajout-de-lamplification"><a class="header" href="#ajout-de-lamplification">Ajout de l'amplification</a></h3>
+<p>Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, valeur limite pour éviter la saturation de l'ampli. De cette manière on réhausse le niveau du signal.</p>
+<pre><code>for (int i = 0; i &lt; PCM_NB_SAMPLE; i++){
+ 	  pcmData[i] = pcmData[i] * GAIN;
+   }
+</code></pre>
+<h3 id="ajout-dans-le-code"><a class="header" href="#ajout-dans-le-code">Ajout dans le code</a></h3>
+<p>Dans la boucle While du code, on ajoute la condition pour jouer l'enregistrement.</p>
+<pre><code>/* USER CODE BEGIN WHILE */
+  while (1)
+  {
+	  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)){
+		  HAL_DAC_Start_DMA(&amp;hdac, DAC_CHANNEL_1, (uint32_t*)pcmData, PCM_NB_SAMPLE, DAC_ALIGN_12B_R);
+		  HAL_Delay(NB_SEC_OUTPUT*1000);
+		  HAL_DAC_Stop_DMA(&amp;hdac, DAC_CHANNEL_1);
+	  }
+	  HAL_Delay(500);
+    /* USER CODE END WHILE */
+</code></pre>
+<p>Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction &quot;HAL_DAC_Start_DMA()&quot;. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.</p>
+<p>Le signal se joue sur &quot;HAL_Delay(NB_SEC_OUTPUT*1000);&quot;  soit une seconde, ce qui représente la limite de la durée du signal stockable.</p>
+<p>Enfin, une fois le signal joué on stoppe le DAC à l'aide de la fonction &quot;DAC HAL_DAC_Stop_DMA()&quot;.</p>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
