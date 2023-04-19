@@ -10,11 +10,13 @@ Nous avons illustré nos avancements dans notre rubrique [Exemples](#exemples), 
 
 Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :
 
-INSERER IMAGE CHAINE COMPLETE PROJET
+![alt text](C:\Users\baptl\Documents\ENSTA\SA4\depot-ensta-STM32-Traitement-Son\src\presentation\schema_projet.png)
+
 
 ## Materiel
 
 Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.
+![alt text](C:\Users\baptl\Documents\ENSTA\SA4\depot-ensta-STM32-Traitement-Son\src\presentation\img\stm32.png)
 
 ## Utilisation
 
