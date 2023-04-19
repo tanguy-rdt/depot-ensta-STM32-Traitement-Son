@@ -1,18 +1,18 @@
-#Diffusion
+# Diffusion
 
 La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAc via le DMA et générer le signal vers une sortie audio, casque, hauts-parleurs... 
 
-##Methodes utilisation du DAC
+## Methodes utilisation du DAC
 
 Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc
 
 Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). 
 
-##Methodes amplificateur
+## Methodes amplificateur
 
 Le signal de sortie peut être amplifié pour améliorer la qualité sonore. On utilise un amplificateur en spécifiant un gain. Toutefois il est nécessaire de veiller à ne pas dépasser la limite, sous peine de saturer l'amplificateur.
 
-##Mise en pratique
+## Mise en pratique
 
 Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :
 
