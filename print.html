@@ -204,17 +204,20 @@
 <p>Configuration du SAI </p>
 <p><img src="acquisition/./img/Config_SAI.png" alt="" /></p>
 <p>Configuration du DMA lié au SAI </p>
-<p><img src="acquisition/.Config_SAI_DMA.png" alt="" /></p>
+<p><img src="acquisition/./img/Config_SAI_DMA.png" alt="" /></p>
 <p>Code pour l'acquisition du signal audio </p>
-<p>'''c</p>
-<p>#define PDM_DATA_SIZE 8
+<pre><code class="language-c">
+#define PDM_DATA_SIZE 8
 #define PDM_NB_SAMPLE_BY_FRAME PDM_FRAME_LENGHT/PDM_DATA_SIZE
 #define NB_FRAME_IN_PDM_BUFFERSIZE 20
-#define PDM_BUFFERSIZE PDM_NB_SAMPLE_BY_FRAME*NB_FRAME_IN_PDM_BUFFERSIZE</p>
-<p>uint8_t pdmBuffer[PDM_BUFFERSIZE];</p>
-<p>HAL_SAI_Receive_DMA(&amp;hsai_BlockA1, (uint8_t *)pdmBuffer, PDM_BUFFERSIZE/2);
-HAL_TIM_Base_Start(&amp;htim2);</p>
-<p>'''</p>
+#define PDM_BUFFERSIZE PDM_NB_SAMPLE_BY_FRAME*NB_FRAME_IN_PDM_BUFFERSIZE
+
+uint8_t pdmBuffer[PDM_BUFFERSIZE];
+
+HAL_SAI_Receive_DMA(&amp;hsai_BlockA1, (uint8_t *)pdmBuffer, PDM_BUFFERSIZE/2);
+HAL_TIM_Base_Start(&amp;htim2);
+
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="conversion-des-données-pdm--pcm"><a class="header" href="#conversion-des-données-pdm--pcm">Conversion des données PDM → PCM</a></h1>
 <h2 id="le-pcm"><a class="header" href="#le-pcm">Le PCM</a></h2>
 <p>Le PCM (<em>Pulse Code With Modulation</em>), est un signal numérique produit à la suite d'une chaîne d'opération: Échantillonnage, quantification et codage. <br />
