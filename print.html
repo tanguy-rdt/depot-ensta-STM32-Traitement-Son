@@ -160,11 +160,12 @@
 <p>Nous avons illustré nos avancements dans notre rubrique <a href="presentation/presentation.html#exemples">Exemples</a>, nous avons effectué plusieurs actions, comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...</p>
 <p>Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :</p>
 <p><img src="presentation/./img/sch%C3%A9ma_gen.png" alt="" /></p>
+<p>Vue schématique du projets:</p>
+<p><img src="presentation/./img/schema_projet.png" alt="" /></p>
 <h2 id="matériel"><a class="header" href="#matériel">Matériel</a></h2>
 <p>Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.</p>
-<p><img src="presentation/./img/stm32.png" alt="" />
-<img src="presentation/./img/micro.jpg" alt="" />
-<img src="presentation/./img/audio_headset.png" alt="" /></p>
+<p><img src="presentation/./img/stm32.png" alt="" /></p>
+<p><img src="presentation/./img/micro.jpg" alt="" /></p>
 <h2 id="utilisation"><a class="header" href="#utilisation">Utilisation</a></h2>
 <p>Pour tester le projet, vous aurez besoin du materiel cité précédemment. Suivez les instructions suivantes :</p>
 <ul>
@@ -362,8 +363,8 @@ Le Gain max est donc de 64.</p>
 <h3 id="configuration-du-setup"><a class="header" href="#configuration-du-setup">Configuration du setup</a></h3>
 <p>On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.</p>
 <p align="center">
-<img src="diffusion/./.img/DAC_config.png" alt="screenV0" width="350" height="350" >
-<img src="diffusion/./.img/DAC_config2.png" alt="screenV0" width="350" height="350">
+<img src="diffusion/./img/DAC_config.png" alt="screenV0" width="350" height="350" >
+<img src="diffusion/./img/DAC_config2.png" alt="screenV0" width="350" height="350">
 </p>
 Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
 En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.
