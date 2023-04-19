@@ -33,5 +33,56 @@ Les échantillons audio en entrée sont acquis par broche de sortie de données 
 
 ## DMA
 
+Le DMA (_Direct Memory Access_) soit accès direct à la mémoire permet de stocker directement des données venant d'un périphérique en mémoire principale de la machine. C'est à dire que le microprocesseur n'intervient pas lors du transfert. La conclusion du transfert de donnée peut être signalée par interruption, cela sera utile dans le cas de notre projet. Le DMA est surtout utile quand on travail avec de grandes quantités de données, le processeur peut rapidement être ralenti si tous les octets doivent passer par l'unité centrale. L'utilisation du DMA permettra donc de transférer des données sans qu'aucun code ne soit exécuté.
+
+
+Voici un schéma explicatif pour mieux comprendre le principe du DMA : 
+
+Schéma simplifié d'un transfert de mémoire dans un microprocesseur
+
+![](./img/CPU.png)
+
+Schéma d'un transfert de mémoire avec l'aide du DMA 
+
+![](./img/DMA.png)
+
+
+ Pendant que les données sont transférées avec le DMA, l'unité centrale peut travailler sur d'autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.  
+
 
 ## Pratique 
+
+Dans cette partie on va voir dans un premier temps la configuration de l'horloge et du SAI en mode DMA et dans un second temps le code implémenté pour la réception via le SAI en mode DMA. 
+
+Configuration horloge du SAI 
+
+![](./img/Config_Clock_SAI.png)
+
+Configuration du SAI 
+
+![](./img/Config_SAI.png)
+
+Configuration du DMA lié au SAI 
+
+![](.Config_SAI_DMA.png)
+
+Code pour l'acquisition du signal audio 
+
+'''c
+
+#define PDM_DATA_SIZE 8
+#define PDM_NB_SAMPLE_BY_FRAME PDM_FRAME_LENGHT/PDM_DATA_SIZE
+#define NB_FRAME_IN_PDM_BUFFERSIZE 20
+#define PDM_BUFFERSIZE PDM_NB_SAMPLE_BY_FRAME*NB_FRAME_IN_PDM_BUFFERSIZE
+
+uint8_t pdmBuffer[PDM_BUFFERSIZE];
+
+HAL_SAI_Receive_DMA(&hsai_BlockA1, (uint8_t *)pdmBuffer, PDM_BUFFERSIZE/2);
+HAL_TIM_Base_Start(&htim2);
+
+'''
+
+
+
+
+
