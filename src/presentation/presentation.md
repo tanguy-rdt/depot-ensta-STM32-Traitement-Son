@@ -10,14 +10,16 @@ Nous avons illustré nos avancements dans notre rubrique [Exemples](#exemples), 
 
 Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :
 
-![alt text](./img/schema_projet.png)
+![](./img/schéma_gen.png)
 
 
 ## Materiel
 
 Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.
 
-![alt text](./img/stm32.png)
+![](./img/stm32.png)
+![](./img/micro.jpg)
+![](./img/audio_headset.png)
 
 
 ## Utilisation
