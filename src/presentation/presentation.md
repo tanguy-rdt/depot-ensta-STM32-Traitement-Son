@@ -1,3 +1,9 @@
+> Baptiste LE ROUX
+>
+> Melvin DUBEE
+>
+> Tanguy ROUDAUT
+
 # Présentation
 
 ## Explication du projet
