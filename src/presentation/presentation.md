@@ -19,7 +19,7 @@ Après avoir atteint une certaine maitrises de ces différents aspects nous avon
 ![](./img/schéma_gen.png)
 
 
-Vue schématique du projets:
+Vue schématique du projet:
 
 ![](./img/schema_projet.png)
 

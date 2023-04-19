@@ -64,11 +64,11 @@ Dans la boucle While du code, on ajoute la condition pour jouer l'enregistrement
   }
 ```
 
-Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction "HAL_DAC_Start_DMA()". En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.
+Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction `HAL_DAC_Start_DMA()`. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.
 
-Le signal se joue sur "HAL_Delay(NB_SEC_OUTPUT*1000);"  soit une seconde, ce qui représente la limite de la durée du signal stockable.
+Le signal se joue sur `HAL_Delay(NB_SEC_OUTPUT*1000);`  soit une seconde, ce qui représente la limite de la durée du signal stockable.
 
-Enfin, une fois le signal joué on stoppe le DAC à l'aide de la fonction "DAC HAL_DAC_Stop_DMA()".
+Enfin, une fois le signal joué on stoppe le DAC à l'aide de la fonction `DAC HAL_DAC_Stop_DMA()`.
 
 
 
