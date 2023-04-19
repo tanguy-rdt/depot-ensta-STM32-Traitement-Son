@@ -21,16 +21,16 @@ Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :
 ### Configuration du setup
 
 On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.
-<div>
-    <img src="img\DAC_config.png" style="float:left; width:50%;">
-    <img src="img\DAC_config2.png" style="float:right; width:50%;">
-</div>
 
+<div>
+    <img src="img\DAC_config.png" style="float:left; width:50%; margin-right:10px;">
+    <img src="img\DAC_config2.png" style="float:right; width:50%; margin-left:10px;">
+</div>
 
 Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
 En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.
 
-![alt text](img\clock_timer.png)
+![alt text](./img/clock_timer.png)
 
 Une fois la configuration enregistré, nous pouvons générer le code.
 
