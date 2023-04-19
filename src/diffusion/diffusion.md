@@ -10,7 +10,9 @@ Le DAC peut être configuré pour fonctionner avec différentes résolutions (8,
 
 ## Methodes amplificateur
 
-Le signal de sortie peut être amplifié pour améliorer la qualité sonore. On utilise un amplificateur en spécifiant un gain. Toutefois il est nécessaire de veiller à ne pas dépasser la limite, sous peine de saturer l'amplificateur.
+Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons determiné précedemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :
+Gain_max = 4096/64 = 64
+Le Gain max est donc de 64.
 
 ## Mise en pratique
 
@@ -18,15 +20,22 @@ Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :
 
 ### Configuration du setup
 
-On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré,
+On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.
+<div>
+    <img src="img\DAC_config.png" style="float:left; width:50%;">
+    <img src="img\DAC_config2.png" style="float:right; width:50%;">
+</div>
 
-![](./img/Setup_DAC.png)
+Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
+En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.
+
+![alt text](C:\Users\baptl\Documents\ENSTA\SA4\depot-ensta-STM32-Traitement-Son\src\diffusion\img\clock_timer.png)
 
 Une fois la configuration enregistré, nous pouvons générer le code.
 
 ### Ajout de l'amplification
 
-Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, valeur limite pour éviter la saturation de l'ampli. De cette manière on réhausse le niveau du signal.
+Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.
 
 ```
 for (int i = 0; i < PCM_NB_SAMPLE; i++){
