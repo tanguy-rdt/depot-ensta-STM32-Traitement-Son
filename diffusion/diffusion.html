@@ -188,9 +188,9 @@ En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK
     /* USER CODE END WHILE */
   }
 </code></pre>
-<p>Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction &quot;HAL_DAC_Start_DMA()&quot;. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.</p>
-<p>Le signal se joue sur &quot;HAL_Delay(NB_SEC_OUTPUT*1000);&quot;  soit une seconde, ce qui représente la limite de la durée du signal stockable.</p>
-<p>Enfin, une fois le signal joué on stoppe le DAC à l'aide de la fonction &quot;DAC HAL_DAC_Stop_DMA()&quot;.</p>
+<p>Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction <code>HAL_DAC_Start_DMA()</code>. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.</p>
+<p>Le signal se joue sur <code>HAL_Delay(NB_SEC_OUTPUT*1000);</code>  soit une seconde, ce qui représente la limite de la durée du signal stockable.</p>
+<p>Enfin, une fois le signal joué on stoppe le DAC à l'aide de la fonction <code>DAC HAL_DAC_Stop_DMA()</code>.</p>
 
                     </main>
 
