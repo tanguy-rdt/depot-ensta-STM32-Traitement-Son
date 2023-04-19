@@ -61,6 +61,27 @@ Au final on obtiendra un signal _PCM_ avec un certain nombres d'impulsions, des 
 
 ## Mise en pratique 
 
+### Variables
+
+Nous avons besoins d'un certains nombre de variables. 
+1. Le `pdmBuffer` présenter à la partie précédente qui contient les valeurs _PDM_ du DMA
+2. Le `pcmBuffer`, il contiendra les données pcm convertis d'un demi DMA 
+3. le `pcmData`, il contiendra toutes les données pcm convertis. 
+   
+```c
+#define NB_FRAME_IN_PDM_BUFFERSIZE 20
+#define PDM_BUFFERSIZE PDM_NB_SAMBLE_BY_FRAME*NB_FRAME_IN_PDM_BUFFERSIZE
+#define PCM_BUFFERSIZE NB_FRAME_IN_PDM_BUFFERSIZE/2
+
+#define PCM_SAMPLING_RATE 48000
+#define NB_SEC_OUTPUT 1
+#define PCM_NB_SAMPLE (NB_SEC_OUTPUT*PCM_SAMPLING_RATE)
+
+uint8_t pdmBuffer[PDM_BUFFERSIZE];
+uint32_t pcmBuffer[PCM_BUFFERSIZE];
+uint32_t pcmData[PCM_NB_SAMPLE];
+```
+
 ### Lecture du DMA
 Comme expliqué dans la partie de [l'acquisition](../acquisition/acquisition.md), nous travaillons en demi DMA pour des soucis de stockage et de conversion en temps réel. Quand un demi DMA est plein, les données PDM sont disponible pour être convertis en PCM. \
 Il faut donc savoir qu'elle partie du DMA est plein pour procédé à la conversion. 
