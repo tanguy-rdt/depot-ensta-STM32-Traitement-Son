@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Filtrage - Project SA4 STM32 - Traitement du son</title>
+        <title>Sinus generator - Project SA4 STM32 - Traitement du son</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -35,7 +35,7 @@
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "../";
+            var path_to_root = "../../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../presentation/presentation.html"><strong aria-hidden="true">1.</strong> Présentation</a></li><li class="chapter-item expanded "><a href="../acquisition/acquisition.html"><strong aria-hidden="true">2.</strong> Acquisition des données PDM</a></li><li class="chapter-item expanded "><a href="../conversion/conversion.html"><strong aria-hidden="true">3.</strong> Conversion du PDM → PCM</a></li><li class="chapter-item expanded "><a href="../diffusion/diffusion.html"><strong aria-hidden="true">4.</strong> Diffusion des données PCM</a></li><li class="chapter-item expanded "><a href="../filtrage/filtrage.html" class="active"><strong aria-hidden="true">5.</strong> Filtrage</a></li><li class="chapter-item expanded "><a href="../exemple/exemple.html"><strong aria-hidden="true">6.</strong> Exemple</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../exemple/toggle_led/toggle_led.html"><strong aria-hidden="true">6.1.</strong> Toggle Led</a></li><li class="chapter-item expanded "><a href="../exemple/pushbutton_led/pushbutton_led.html"><strong aria-hidden="true">6.2.</strong> Pushbutton Led</a></li><li class="chapter-item expanded "><a href="../exemple/pushbutton_uart/pushbutton_uart.html"><strong aria-hidden="true">6.3.</strong> Pushbutton UART</a></li><li class="chapter-item expanded "><a href="../exemple/wave_gen_sinus/wave_gen_sinus.html"><strong aria-hidden="true">6.4.</strong> Sinus generator</a></li><li class="chapter-item expanded "><a href="../exemple/audio_player/audio_player.html"><strong aria-hidden="true">6.5.</strong> Audio player</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../presentation/presentation.html"><strong aria-hidden="true">1.</strong> Présentation</a></li><li class="chapter-item expanded "><a href="../../acquisition/acquisition.html"><strong aria-hidden="true">2.</strong> Acquisition des données PDM</a></li><li class="chapter-item expanded "><a href="../../conversion/conversion.html"><strong aria-hidden="true">3.</strong> Conversion du PDM → PCM</a></li><li class="chapter-item expanded "><a href="../../diffusion/diffusion.html"><strong aria-hidden="true">4.</strong> Diffusion des données PCM</a></li><li class="chapter-item expanded "><a href="../../filtrage/filtrage.html"><strong aria-hidden="true">5.</strong> Filtrage</a></li><li class="chapter-item expanded "><a href="../../exemple/exemple.html"><strong aria-hidden="true">6.</strong> Exemple</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../exemple/toggle_led/toggle_led.html"><strong aria-hidden="true">6.1.</strong> Toggle Led</a></li><li class="chapter-item expanded "><a href="../../exemple/pushbutton_led/pushbutton_led.html"><strong aria-hidden="true">6.2.</strong> Pushbutton Led</a></li><li class="chapter-item expanded "><a href="../../exemple/pushbutton_uart/pushbutton_uart.html"><strong aria-hidden="true">6.3.</strong> Pushbutton UART</a></li><li class="chapter-item expanded "><a href="../../exemple/wave_gen_sinus/wave_gen_sinus.html" class="active"><strong aria-hidden="true">6.4.</strong> Sinus generator</a></li><li class="chapter-item expanded "><a href="../../exemple/audio_player/audio_player.html"><strong aria-hidden="true">6.5.</strong> Audio player</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -115,7 +115,7 @@
                     <h1 class="menu-title">Project SA4 STM32 - Traitement du son</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://gitlab.ensta-bretagne.fr/roudauta/depot-STM32-Traitement-Son" title="Git repository" aria-label="Git repository">
@@ -147,16 +147,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h1 id="génération-dun-signal-de-1khz"><a class="header" href="#génération-dun-signal-de-1khz">Génération d'un signal de 1Khz</a></h1>
+<h3 id="configuration-du-dac"><a class="header" href="#configuration-du-dac">Configuration du DAC</a></h3>
+<p><img src="./img/dac.png" alt="" /></p>
+<p>On configure en plus le DMA qui sera associé au DAC</p>
+<p><img src="./img/dac_dma.png" alt="" /></p>
+<h3 id="configuration-du-timer"><a class="header" href="#configuration-du-timer">Configuration du Timer</a></h3>
+<p><img src="./img/timer.png" alt="" /></p>
+<p>Pour choisir les paramétres du timers pour une fréquence voulu on peut appliquer les formules suivantes :</p>
+<p>$$ TriggerFrequency = OutputWaveFrequency * Ns$$ </p>
+<p>avec <em>Ns</em> le nombre de sample de notre signal</p>
+<p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency}$$</p>
+<h4 id="exemple-pour-un-sinus-avec-une-lookup-table-de-128-samples"><a class="header" href="#exemple-pour-un-sinus-avec-une-lookup-table-de-128-samples">Exemple: <em>Pour un sinus avec une lookup table de 128 samples</em></a></h4>
+<p><strong>Si l'on souhaite une freq de 1Khz:</strong></p>
+<p>$$ TriggerFrequency = OutputWaveFrequency * Ns = 1.10^3 * 128 = 128.10^3$$ </p>
+<p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{128.10^3} = 625$$</p>
+<p>On peut donc choisir un prescaler de 0 est un période de 625.</p>
+<p><img src="./img/1k.jpg" alt="" /></p>
+<p><strong>Si l'on souhaite une freq de 500Hz:</strong></p>
+<p>$$ TriggerFrequency = OutputWaveFrequency * Ns = 500 * 128 = 64.10^3$$ </p>
+<p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{64.10^3} = 1250$$</p>
+<p>On peut donc choisir un prescaler de 0 est un période de 1250. On sait que 1kHz c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter un prescaler de 2.</p>
+<p><img src="./img/500.jpg" alt="" /></p>
+<h3 id="code"><a class="header" href="#code">Code</a></h3>
+<pre><code class="language-c">  /* USER CODE BEGIN 2 */
+  uint32_t Wave_LUT[128] = {
+      2048, 2149, 2250, 2350, 2450, 2549, 2646, 2742, 2837, 2929, 3020, 3108, 3193, 3275, 3355,
+      3431, 3504, 3574, 3639, 3701, 3759, 3812, 3861, 3906, 3946, 3982, 4013, 4039, 4060, 4076,
+      4087, 4094, 4095, 4091, 4082, 4069, 4050, 4026, 3998, 3965, 3927, 3884, 3837, 3786, 3730,
+      3671, 3607, 3539, 3468, 3394, 3316, 3235, 3151, 3064, 2975, 2883, 2790, 2695, 2598, 2500,
+      2400, 2300, 2199, 2098, 1997, 1896, 1795, 1695, 1595, 1497, 1400, 1305, 1212, 1120, 1031,
+      944, 860, 779, 701, 627, 556, 488, 424, 365, 309, 258, 211, 168, 130, 97,
+      69, 45, 26, 13, 4, 0, 1, 8, 19, 35, 56, 82, 113, 149, 189,
+      234, 283, 336, 394, 456, 521, 591, 664, 740, 820, 902, 987, 1075, 1166, 1258,
+      1353, 1449, 1546, 1645, 1745, 1845, 1946, 2047
+  };
+
+  HAL_DAC_Start_DMA(&amp;hdac, DAC_CHANNEL_1, (uint32_t*)Wave_LUT, 128, DAC_ALIGN_12B_R);
+  HAL_TIM_Base_Start(&amp;htim2);
+  /* USER CODE END 2 */
+</code></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../diffusion/diffusion.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../exemple/pushbutton_uart/pushbutton_uart.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../exemple/exemple.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../../exemple/audio_player/audio_player.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -166,11 +206,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../diffusion/diffusion.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../exemple/pushbutton_uart/pushbutton_uart.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../exemple/exemple.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../../exemple/audio_player/audio_player.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -185,13 +225,13 @@
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
 
