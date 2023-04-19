@@ -148,7 +148,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div style="break-before: page; page-break-before: always;"></div><h1 id="acquisition"><a class="header" href="#acquisition">Acquisition</a></h1>
+                        <h1 id="presentation"><a class="header" href="#presentation">Presentation</a></h1>
+<h2 id="explication-du-projet"><a class="header" href="#explication-du-projet">Explication du projet</a></h2>
+<p>Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.</p>
+<h2 id="materiel"><a class="header" href="#materiel">Materiel</a></h2>
+<p>Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.</p>
+<h2 id="utilisation"><a class="header" href="#utilisation">Utilisation</a></h2>
+<p>Pour tester le projet, vous aurez besoin du materiel cité précédemment. Suivez les instructions suivantes :</p>
+<ul>
+<li>Connectez la carte STM32 à votre pc via le periphérique ST-Link et lancer le logiciel STM32CubeIDE.</li>
+<li>Ouvrez le projet récupérable sur le git et flashez la carte avec le code main.c</li>
+<li>Connectez le haut parleur ou le casque audio sur les pin.</li>
+<li>Appuyez sur le bouton noir pour lancer/recommencer l'enregistrement, puis appuyez sur le bouton bleu pour le jouer.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="acquisition"><a class="header" href="#acquisition">Acquisition</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="diffusion"><a class="header" href="#diffusion">Diffusion</a></h1>
 <p>La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAc via le DMA et générer le signal vers une sortie audio, casque, hauts-parleurs... </p>
 <h2 id="methodes-utilisation-du-dac"><a class="header" href="#methodes-utilisation-du-dac">Methodes utilisation du DAC</a></h2>
