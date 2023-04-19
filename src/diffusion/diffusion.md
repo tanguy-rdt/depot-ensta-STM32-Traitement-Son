@@ -26,10 +26,11 @@ On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 ind
     <img src="img\DAC_config2.png" style="float:right; width:50%;">
 </div>
 
+
 Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
 En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.
 
-![alt text](C:\Users\baptl\Documents\ENSTA\SA4\depot-ensta-STM32-Traitement-Son\src\diffusion\img\clock_timer.png)
+![alt text](img\clock_timer.png)
 
 Une fois la configuration enregistré, nous pouvons générer le code.
 
