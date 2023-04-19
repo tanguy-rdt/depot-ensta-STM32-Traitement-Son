@@ -64,11 +64,11 @@ Configuration du SAI
 
 Configuration du DMA lié au SAI 
 
-![](.Config_SAI_DMA.png)
+![](./img/Config_SAI_DMA.png)
 
 Code pour l'acquisition du signal audio 
 
-'''c
+```c
 
 #define PDM_DATA_SIZE 8
 #define PDM_NB_SAMPLE_BY_FRAME PDM_FRAME_LENGHT/PDM_DATA_SIZE
@@ -80,7 +80,7 @@ uint8_t pdmBuffer[PDM_BUFFERSIZE];
 HAL_SAI_Receive_DMA(&hsai_BlockA1, (uint8_t *)pdmBuffer, PDM_BUFFERSIZE/2);
 HAL_TIM_Base_Start(&htim2);
 
-'''
+```
 
 
 
