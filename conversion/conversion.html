@@ -147,7 +147,76 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h1 id="conversion-des-données-pdm--pcm"><a class="header" href="#conversion-des-données-pdm--pcm">Conversion des données PDM → PCM</a></h1>
+<h2 id="le-pcm"><a class="header" href="#le-pcm">Le PCM</a></h2>
+<p>Le PCM (<em>Pulse Code With Modulation</em>), est un signal numérique produit à la suite d'une chaîne d'opération: Échantillonnage, quantification et codage. <br />
+Comme on peut le constater sur la figure suivante le signal est échantilloné à une fréquence <em>fe</em> et chaque échantillon représente une impulsion à une certaine amplitude.</p>
+<p><img src="./img/pcm.png" alt="" /></p>
+<p>Si l'on compare l'allure d'un signal <em>PDM</em> à celle d'un signal <em>PCM</em>, on remarque 2 différences principales:</p>
+<ol>
+<li>La fréquence d'échantillonnage du signal <em>PDM</em> est plus importante que celle du signal <em>PCM</em></li>
+<li>Le signal <em>PDM</em> possède des amplitudes binaires (0-1) alors que l'amplitude du <em>PCM</em> est numériques.</li>
+</ol>
+<p><img src="./img/pdm_pcm.png" alt="" /></p>
+<h2 id="conversion"><a class="header" href="#conversion">Conversion</a></h2>
+<p>Ils existes plusieurs solutions, pour réaliser une conversion <em>PDM</em> vers <em>PCM</em>. Selon la documentation de <em>STM32</em> il est conséillé de suivre la procédure suivante :</p>
+<p><img src="./img/conversion.png" alt="" /></p>
+<p>Il faut dans un premier temps utilisé un filtre passe-bas pour convertir les données <em>PDM</em> en <em>PCM</em>, puis utiliser une décimation pour réduire la fréquence d'échantillonnage du signal <em>PCM</em>. 
+Dans le cas du projet, nous allons simplifier les choses, nous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu'en plus de décimé notre signal on va convertir nos bits en données numériques, c'est à dire en <em>PCM</em>.</p>
+<p>Comme expliqué précédement le <em>PDM</em> est configuré à une fréquence d'échantillonage de <em>3.072 MHz</em>, ce qui est beaucoup plus important que la fréquence cible du <em>PCM</em> qui est de <em>48kHz</em>. L'objectif est donc de réduire la fréquence du signal <em>PDM</em>. <br />
+La décimation permet de réduire la fréquence d'échantillonage d'un signal en prenant seulement un échanitillon tous les n-échantillons: </p>
+<p><img src="./img/d%C3%A9cimation.png" alt="" /></p>
+<p>C'est donc idéal pour notre cas d'utilisation. <br />
+Pour déterminer le facteur de décimation on peut appliquer la formule de la figure précédente. Après calcul on trouve un facteur de décimation de 64. Si on prend donc 1 échantillon PDM tout les 64 échantillons on obtiendra un signal avec une fréquence de <em>48kHz</em>. <br />
+Seulement, prendre 1 échantillon tout les n-échantillons, permet uinquement de réduire la fréquence d'échantillonage du signal, pas de convertir en PDM → PCM. On va donc compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d'obtenir une valeur entre 0 et 64. 
+Au final on obtiendra un signal <em>PCM</em> avec un certain nombres d'impulsions, des amplitudes situé entre 0 et 64 avec une fréquence d'échantillonage de <em>48kHz</em></p>
+<h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
+<h3 id="lecture-du-dma"><a class="header" href="#lecture-du-dma">Lecture du DMA</a></h3>
+<p>Comme expliqué dans la partie de <a href="../acquisition/acquisition.html">l'acquisition</a>, nous travaillons en demi DMA pour des soucis de stockage et de conversion en temps réel. Quand un demi DMA est plein, les données PDM sont disponible pour être convertis en PCM. <br />
+Il faut donc savoir qu'elle partie du DMA est plein pour procédé à la conversion. </p>
+<p>STM nous donne accès à deux fonctions d'interruptions que l'on peut modifier pour mettre des flags à 1.</p>
+<ol>
+<li>Une intérruption pour déterminer si la moitié du DMA est plein: <br />
+<code>void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
+<li>Une intérruption pour déterminer si le DMA est plein: <br />
+<code>void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
+</ol>
+<p>Grâce à c'est fonction on peut facilement déterminer qu'elle partie du DMA est pleine et doit être convertis en PCM.</p>
+<p>Maintenant que l'on sait manipuler les différents secteurs du DMA, on peut facilement réaliser une boucle while, pour convertir des données en temps réel à chaque fois que l'on à une interruption.</p>
+<pre><code class="language-c">while (recording){
+	if(dmaLSBFull || dmaMSBFull){ // si l'une des moitié du DMA est pleine
+			if (dmaMSBFull){ 
+				dmaMSBFull = 0; // remise à 0 du flag
+				pdm2pcm((uint8_t*)(pdmBuffer+PDM_BUFFERSIZE/2), pcmBuffer);
+			}
+			else {
+				dmaLSBFull = 0;
+				pdm2pcm(pdmBuffer, pcmBuffer);
+			}
+
+		// ajout des données pcm convertis aux données finale
+		for(int i = 0; i&lt;PCM_BUFFERSIZE; i++){
+			pcmData[pcmDataIndex]=pcmBuffer[i];
+			pcmDataIndex++;
+			if(pcmDataIndex &gt;= PCM_NB_SAMPLE){
+				recording = 0;
+				HAL_SAI_DMAStop(&amp;hsai_BlockA1);
+			}
+		}
+	}
+}
+</code></pre>
+<p>Chaque i</p>
+<pre><code class="language-c">void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmBuffer){
+	uint64_t* pdmFrameBuffer = pdmBuffer;
+
+
+	for (int frameNbr=0; frameNbr&lt;NB_FRAME_IN_PDM_BUFFERSIZE/2; frameNbr++){
+		pcmBuffer[frameNbr] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
+	}
+}
+</code></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
