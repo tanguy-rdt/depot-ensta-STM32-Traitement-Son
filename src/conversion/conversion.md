@@ -21,14 +21,27 @@ Si l'on compare l'allure d'un signal _PDM_ à celle d'un signal _PCM_, on remarq
 
 
 
-## Conversion
+# Conversion 
+## Conversion selon STM
 
 Ils existes plusieurs solutions, pour réaliser une conversion _PDM_ vers _PCM_. Selon la documentation de _STM32_ il est conséillé de suivre la procédure suivante :
 
 ![](./img/conversion.png)
 
-Il faut dans un premier temps utilisé un filtre passe-bas pour convertir les données _PDM_ en _PCM_, puis utiliser une décimation pour réduire la fréquence d'échantillonnage du signal _PCM_. 
-Dans le cas du projet, nous allons simplifier les choses, nous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu'en plus de décimé notre signal on va convertir nos bits en données numériques, c'est à dire en _PCM_.
+Il faut dans un premier temps utilisé un filtre passe-bas pour convertir les données _PDM_ en _PCM_. La convertion ce fait grâce à un filtre FIR, l'objectif est de multiplier les 
+échantillon PDM par les coéficient du filtre et de faire une somme pondéré. Au final on se retrouve avec des données numériques, c'est à dire un signal _PCM_
+
+![](./img/fir.png)
+
+Ce filtre permet également de réduir la fréquence d'échantillonage, mais insuffisament. Pour obtenir la fréquence d'échantillonage du _PCM_ il faut procéder à une décimation, avec un facteur de décimation approprié.
+
+![](./img/décimation.png)
+
+## Notre conversion
+
+Dans le cas du projet, nous avons simplifié la conversion. Nnous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu'en plus de décimé notre signal on va convertir nos bits en données numériques, c'est à dire en _PCM_.
+
+![](./img/conversion2.png)
 
 Comme expliqué précédement le _PDM_ est configuré à une fréquence d'échantillonage de _3.072 MHz_, ce qui est beaucoup plus important que la fréquence cible du _PCM_ qui est de _48kHz_. L'objectif est donc de réduire la fréquence du signal _PDM_. \
 La décimation permet de réduire la fréquence d'échantillonage d'un signal en prenant seulement un échanitillon tous les n-échantillons: 
@@ -38,7 +51,11 @@ La décimation permet de réduire la fréquence d'échantillonage d'un signal en
 C'est donc idéal pour notre cas d'utilisation. \
 Pour déterminer le facteur de décimation on peut appliquer la formule de la figure précédente. Après calcul on trouve un facteur de décimation de 64. Si on prend donc 1 échantillon PDM tout les 64 échantillons on obtiendra un signal avec une fréquence de _48kHz_. \
 Seulement, prendre 1 échantillon tout les n-échantillons, permet uinquement de réduire la fréquence d'échantillonage du signal, pas de convertir en PDM &rarr; PCM. On va donc compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d'obtenir une valeur entre 0 et 64. 
-Au final on obtiendra un signal _PCM_ avec un certain nombres d'impulsions, des amplitudes situé entre 0 et 64 avec une fréquence d'échantillonage de _48kHz_
+Au final on obtiendra un signal _PCM_ avec un certain nombres d'impulsions, des amplitudes situé entre 0 et 64 avec une fréquence d'échantillonage de _48kHz_.
+
+
+![](./img/decimation2.png)
+
 
 
 
@@ -56,7 +73,55 @@ STM nous donne accès à deux fonctions d'interruptions que l'on peut modifier p
 
 Grâce à c'est fonction on peut facilement déterminer qu'elle partie du DMA est pleine et doit être convertis en PCM.
 
-Maintenant que l'on sait manipuler les différents secteurs du DMA, on peut facilement réaliser une boucle while, pour convertir des données en temps réel à chaque fois que l'on à une interruption.
+
+```c
+while (recording){
+	if(dmaLSBFull || dmaMSBFull){ // si l'une des moitié du DMA est pleine
+			if (dmaMSBFull){ 
+				dmaMSBFull = 0; // remise à 0 du flag
+				pdm2pcm((uint8_t*)(pdmBuffer+PDM_BUFFERSIZE/2), pcmBuffer);
+			}
+			else {
+				dmaLSBFull = 0;
+				pdm2pcm(pdmBuffer, pcmBuffer);
+			}
+	}
+}
+```
+
+Chaque interrupion on execute la fonction de conversion `pcm2pdm` avec en premier argument les donnés pdm (données dans le DMA) à convertir et en deuxième argument un tableau vide qui va nous permettre
+de récuperer les données pcm convertis. \
+C'est dans le permiers argumets, où l'on donne le tableau des valeurs pdm qu'il faut spécifier sur qu'elle moitié du DMA on va travaillé. 
+1. Si c'est la première moitié, il suffit de lui donné le tableau `pdmBuffer` en entier. C'est à dire que si notre tableau est de longueur 100, alors on commence à l'élement 0 et dans notre fonction on ira jusqu'à l'élément 49. 
+2. Si c'est la seconde moitié, alors on donne le tableau `pdmBuffer+PDM_BUFFERSIZE/2`, c'est à dire que si notre tableau est de longueur 100, alors on commence à l'élement 50 et dans notre fonction on ira jusqu'à l'élément 99. 
+
+
+### Conversion des données
+
+Il est important de noter que dans la partie [acquisition](../acquisition/acquisition.md), nous avons configurer le _SAI_ avec une longuer de frame de 64 bits et un type de données sur 8 bits. Nos valeurs dans le dma sont donc sur 8 bits. Nous on souhaite faire la somme du nombre de bit à 1 dans une frame (64-bits), pour cela on va créer un pointeur sur 64 bits vers notre tableau de 8 bits qui contient les données _PDM_: `uint64_t* pdmFrameBuffer = pdmBuffer;` 
+Maintenant que l'on à un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourire tout les frames de notre acquisition à l'ai d'une boucle `for`. \
+
+Pour compter les bits à 1 on utilise une fonciton integré au compilateur: `__builtin_popcount`, cela nous permet donc d'obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillon _PDM_ ce retrouve réduit à 1 échantillon _PCM_.
+
+```c
+void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmBuffer){
+	uint64_t* pdmFrameBuffer = pdmBuffer;
+
+
+	for (int frameNbr=0; frameNbr<NB_FRAME_IN_PDM_BUFFERSIZE/2; frameNbr++){
+		pcmBuffer[frameNbr] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
+	}
+}
+```
+
+
+### Arrêt de l'enregistrement
+
+Les données d'un demi DMA sont maintenant convertissable à l'aide de notre fonction, mais il reste un problème. Il faut stocker c'est valeurs PCM. \
+Pour cela on à un tableau `pcmData` qui à une longeur de 48 000 échantillons, soit 1 seconde d'enregistrement avec une fréquence d'échantillonnage de 48kHz. A chaque fois que l'on obtient de nouvelles données PCM à la suite d'une conversion, il faut ajouter les données de `pcmBufer` dans `pcmData`. \
+Si `pcmData` est plein, dans ce cas il faut arrêter l'enregistrement.
+
+Ce qui nous permet d'avoir le code suivant:
 
 ```c
 while (recording){
@@ -79,20 +144,6 @@ while (recording){
 				HAL_SAI_DMAStop(&hsai_BlockA1);
 			}
 		}
-	}
-}
-```
-
-Chaque i
-
-
-```c
-void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmBuffer){
-	uint64_t* pdmFrameBuffer = pdmBuffer;
-
-
-	for (int frameNbr=0; frameNbr<NB_FRAME_IN_PDM_BUFFERSIZE/2; frameNbr++){
-		pcmBuffer[frameNbr] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
 	}
 }
 ```
