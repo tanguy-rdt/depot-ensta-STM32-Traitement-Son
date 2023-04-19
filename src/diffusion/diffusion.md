@@ -40,7 +40,7 @@ Une fois la configuration enregistré, nous pouvons générer le code.
 
 Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.
 
-```
+```c
 for (int i = 0; i < PCM_NB_SAMPLE; i++){
  	  pcmData[i] = pcmData[i] * GAIN;
    }
@@ -49,7 +49,8 @@ for (int i = 0; i < PCM_NB_SAMPLE; i++){
 ### Ajout dans le code
 
 Dans la boucle While du code, on ajoute la condition pour jouer l'enregistrement.
-```
+
+```c
 /* USER CODE BEGIN WHILE */
   while (1)
   {
@@ -60,6 +61,7 @@ Dans la boucle While du code, on ajoute la condition pour jouer l'enregistrement
 	  }
 	  HAL_Delay(500);
     /* USER CODE END WHILE */
+  }
 ```
 
 Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction "HAL_DAC_Start_DMA()". En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.
