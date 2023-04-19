@@ -372,13 +372,13 @@ En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK
 <p>Une fois la configuration enregistré, nous pouvons générer le code.</p>
 <h3 id="ajout-de-lamplification"><a class="header" href="#ajout-de-lamplification">Ajout de l'amplification</a></h3>
 <p>Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.</p>
-<pre><code>for (int i = 0; i &lt; PCM_NB_SAMPLE; i++){
+<pre><code class="language-c">for (int i = 0; i &lt; PCM_NB_SAMPLE; i++){
  	  pcmData[i] = pcmData[i] * GAIN;
    }
 </code></pre>
 <h3 id="ajout-dans-le-code"><a class="header" href="#ajout-dans-le-code">Ajout dans le code</a></h3>
 <p>Dans la boucle While du code, on ajoute la condition pour jouer l'enregistrement.</p>
-<pre><code>/* USER CODE BEGIN WHILE */
+<pre><code class="language-c">/* USER CODE BEGIN WHILE */
   while (1)
   {
 	  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)){
@@ -388,6 +388,7 @@ En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK
 	  }
 	  HAL_Delay(500);
     /* USER CODE END WHILE */
+  }
 </code></pre>
 <p>Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction &quot;HAL_DAC_Start_DMA()&quot;. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.</p>
 <p>Le signal se joue sur &quot;HAL_Delay(NB_SEC_OUTPUT*1000);&quot;  soit une seconde, ce qui représente la limite de la durée du signal stockable.</p>
