@@ -147,14 +147,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#Diffusion</p>
+                        <h1 id="diffusion"><a class="header" href="#diffusion">Diffusion</a></h1>
 <p>La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAc via le DMA et générer le signal vers une sortie audio, casque, hauts-parleurs... </p>
-<p>##Methodes utilisation du DAC</p>
+<h2 id="methodes-utilisation-du-dac"><a class="header" href="#methodes-utilisation-du-dac">Methodes utilisation du DAC</a></h2>
 <p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc</p>
 <p>Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). </p>
-<p>##Methodes amplificateur</p>
+<h2 id="methodes-amplificateur"><a class="header" href="#methodes-amplificateur">Methodes amplificateur</a></h2>
 <p>Le signal de sortie peut être amplifié pour améliorer la qualité sonore. On utilise un amplificateur en spécifiant un gain. Toutefois il est nécessaire de veiller à ne pas dépasser la limite, sous peine de saturer l'amplificateur.</p>
-<p>##Mise en pratique</p>
+<h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
 <p>Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :</p>
 <h3 id="configuration-du-setup"><a class="header" href="#configuration-du-setup">Configuration du setup</a></h3>
 <p>On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré,</p>
