@@ -355,12 +355,12 @@ Le Gain max est donc de 64.</p>
 <h3 id="configuration-du-setup"><a class="header" href="#configuration-du-setup">Configuration du setup</a></h3>
 <p>On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.</p>
 <div>
-    <img src="diffusion/img\DAC_config.png" style="float:left; width:50%;">
-    <img src="diffusion/img\DAC_config2.png" style="float:right; width:50%;">
+    <img src="diffusion/img\DAC_config.png" style="float:left; width:50%; margin-right:10px;">
+    <img src="diffusion/img\DAC_config2.png" style="float:right; width:50%; margin-left:10px;">
 </div>
 <p>Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
 En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.</p>
-<p><img src="diffusion/img%5Cclock_timer.png" alt="alt text" /></p>
+<p><img src="diffusion/./img/clock_timer.png" alt="alt text" /></p>
 <p>Une fois la configuration enregistré, nous pouvons générer le code.</p>
 <h3 id="ajout-de-lamplification"><a class="header" href="#ajout-de-lamplification">Ajout de l'amplification</a></h3>
 <p>Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.</p>
