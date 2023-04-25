@@ -1,8 +1,4 @@
-> Baptiste LE ROUX
->
-> Melvin DUBEE
->
-> Tanguy ROUDAUT
+> Baptiste LE ROUX - Melvin DUBEE - Tanguy ROUDAUT
 
 # Présentation
 
@@ -10,9 +6,9 @@
 
 Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.
 
-Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composantes comme le DMA, le DAC etc, ou encore l'utilisation de GIT pour certains membres du groupe.
+Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de GIT pour certains membres du groupe.
 
-Nous avons illustré nos avancements dans notre rubrique [Exemples](#exemples), nous avons effectué plusieurs actions, comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...
+Nous avons illustré notre apprentissage dans la rubrique [Exemples](#exemples), comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...
 
 Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :
 
@@ -21,7 +17,33 @@ Après avoir atteint une certaine maitrises de ces différents aspects nous avon
 
 Vue schématique du projet:
 
-![](./img/schema_projet.png)
+```mermaid
+flowchart LR
+    subgraph STM32
+        SAI
+        DMA1
+        DMA2
+            subgraph Traitement Du Signal
+                CPU
+                RAM
+            end
+        DAC
+    end
+    subgraph Acquisition
+        MEMS[Micro PDM MEMS]
+    end
+    subgraph Restitution
+        CASQUE[Sortie audio]
+    end
+
+    MEMS-->SAI
+    SAI-->DMA1
+    DMA1-->RAM
+    CPU<-->RAM
+    RAM-->DMA2
+    DMA2-->DAC
+    DAC-->CASQUE
+```
 
 
 ## Matériel

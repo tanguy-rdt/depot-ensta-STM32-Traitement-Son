@@ -7,5 +7,10 @@ title = "Project SA4 STM32 - Traitement du son"
 
 
 [output.html]
+mathjax-support = true
 git-repository-url = "https://gitlab.ensta-bretagne.fr/roudauta/depot-STM32-Traitement-Son"
 git-repository-icon = "fa-gitlab"
+
+[preprocessor.mermaid]
+command = "mmdc"
+args = ["--theme", "forest"]
