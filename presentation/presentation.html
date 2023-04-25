@@ -30,6 +30,8 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
     <div id="body-container">
@@ -148,19 +150,42 @@
                 <div id="content" class="content">
                     <main>
                         <blockquote>
-<p>Baptiste LE ROUX</p>
-<p>Melvin DUBEE</p>
-<p>Tanguy ROUDAUT</p>
+<p>Baptiste LE ROUX - Melvin DUBEE - Tanguy ROUDAUT</p>
 </blockquote>
 <h1 id="présentation"><a class="header" href="#présentation">Présentation</a></h1>
 <h2 id="explication-du-projet"><a class="header" href="#explication-du-projet">Explication du projet</a></h2>
 <p>Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.</p>
-<p>Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composantes comme le DMA, le DAC etc, ou encore l'utilisation de GIT pour certains membres du groupe.</p>
-<p>Nous avons illustré nos avancements dans notre rubrique <a href="#exemples">Exemples</a>, nous avons effectué plusieurs actions, comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...</p>
+<p>Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de GIT pour certains membres du groupe.</p>
+<p>Nous avons illustré notre apprentissage dans la rubrique <a href="#exemples">Exemples</a>, comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...</p>
 <p>Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :</p>
 <p><img src="./img/sch%C3%A9ma_gen.png" alt="" /></p>
 <p>Vue schématique du projet:</p>
-<p><img src="./img/schema_projet.png" alt="" /></p>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph STM32
+        SAI
+        DMA1
+        DMA2
+            subgraph Traitement Du Signal
+                CPU
+                RAM
+            end
+        DAC
+    end
+    subgraph Acquisition
+        MEMS[Micro PDM MEMS]
+    end
+    subgraph Restitution
+        CASQUE[Sortie audio]
+    end
+
+    MEMS--&gt;SAI
+    SAI--&gt;DMA1
+    DMA1--&gt;RAM
+    CPU&lt;--&gt;RAM
+    RAM--&gt;DMA2
+    DMA2--&gt;DAC
+    DAC--&gt;CASQUE
+</code></pre>
 <h2 id="matériel"><a class="header" href="#matériel">Matériel</a></h2>
 <p>Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.</p>
 <p><img src="./img/stm32.png" alt="" /></p>
