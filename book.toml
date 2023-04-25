@@ -5,11 +5,12 @@ multilingual = false
 src = "src"
 title = "Project SA4 STM32 - Traitement du son"
 
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+renderer = ["html"]
 
 [output.html]
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
 mathjax-support = true
 git-repository-url = "https://gitlab.ensta-bretagne.fr/roudauta/depot-STM32-Traitement-Son"
 git-repository-icon = "fa-gitlab"
-
-[preprocessor.mermaid]
-mermaid_theme = "dark"
