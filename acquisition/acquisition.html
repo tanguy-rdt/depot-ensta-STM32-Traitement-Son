@@ -32,25 +32,6 @@
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-        <!-- Mermaid -->
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-            async function configureMermaid() {
-                const response = await fetch('../book.toml');
-                const text = await response.text();
-                const mermaidTheme = /mermaid_theme\s*=\s*"(.+?)"/.exec(text)?.[1] || 'default';
-
-                mermaid.initialize({
-                    startOnLoad: true,
-                    theme: mermaidTheme,
-                    // Ajoutez ici d'autres options de configuration si nécessaire
-                });
-            }
-
-            configureMermaid();
-        </script>
-
     </head>
     <body>
     <div id="body-container">
@@ -267,6 +248,8 @@ HAL_TIM_Base_Start(&amp;htim2);
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
 
 
     </div>

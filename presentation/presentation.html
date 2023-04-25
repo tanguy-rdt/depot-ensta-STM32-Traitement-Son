@@ -32,25 +32,6 @@
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-        <!-- Mermaid -->
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-            async function configureMermaid() {
-                const response = await fetch('../book.toml');
-                const text = await response.text();
-                const mermaidTheme = /mermaid_theme\s*=\s*"(.+?)"/.exec(text)?.[1] || 'default';
-
-                mermaid.initialize({
-                    startOnLoad: true,
-                    theme: mermaidTheme,
-                    // Ajoutez ici d'autres options de configuration si nécessaire
-                });
-            }
-
-            configureMermaid();
-        </script>
-
     </head>
     <body>
     <div id="body-container">
@@ -179,7 +160,7 @@
 <p>Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :</p>
 <p><img src="./img/sch%C3%A9ma_gen.png" alt="" /></p>
 <p>Vue schématique du projet:</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid">flowchart LR
     subgraph STM32
         SAI
         DMA1
@@ -204,7 +185,7 @@
     RAM--&gt;DMA2
     DMA2--&gt;DAC
     DAC--&gt;CASQUE
-</code></pre>
+</pre>
 <h2 id="matériel"><a class="header" href="#matériel">Matériel</a></h2>
 <p>Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.</p>
 <p><img src="./img/stm32.png" alt="" /></p>
@@ -258,6 +239,8 @@
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
 
 
     </div>
