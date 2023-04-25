@@ -7,4 +7,3 @@ Pour débuter ce projet nous avons, pu découvrir la carte STM32 et s'est diffé
 - [Pushbutton UART](./pushbutton_uart/pushbutton_uart.md)
 - [Sinus generator](./wave_gen_sinus/wave_gen_sinus.md)
 - [Audio player](./audio_player/audio_player.md)
-- 

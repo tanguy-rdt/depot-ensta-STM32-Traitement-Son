@@ -90,22 +90,31 @@ STM nous donne accès à deux fonctions d'interruptions que l'on peut modifier p
 1. Une intérruption pour déterminer si la moitié du DMA est plein: \
    `void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)`
 2. Une intérruption pour déterminer si le DMA est plein: \
-   `void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)`
+   `void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)`
 
-Grâce à c'est fonction on peut facilement déterminer qu'elle partie du DMA est pleine et doit être convertis en PCM.
+Par exemple si on utilise c'est fonctions d'intérruptions avec deux flags, `cplt` et `half`. Si `half` vaut 1 alors la première moitié du DMA est prête, si c'est `cplt` dans ce cas c'est la seconde. 
 
+```c
+void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai){
+	cplt = 1;
+ 	half = 1;
+}
+
+void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
+  	cplt = 0;
+	half = 1;
+}
+
+```
+
+
+Maintenant qu'on à des flags il ne reste plus qu'à les utiliser pour traité. Si `half` vaut 1 alors on commence le traitement, si `cplt` vaut 0 alors on prends la première moitié sinon la seconde.
 
 ```c
 while (recording){
-	if(dmaLSBFull || dmaMSBFull){ // si l'une des moitié du DMA est pleine
-			if (dmaMSBFull){ 
-				dmaMSBFull = 0; // remise à 0 du flag
-				pdm2pcm((uint8_t*)(pdmBuffer+PDM_BUFFERSIZE/2), pcmBuffer);
-			}
-			else {
-				dmaLSBFull = 0;
-				pdm2pcm(pdmBuffer, pcmBuffer);
-			}
+	if(half){
+		half = 0;
+		pdm2pcm((uint8_t*)(pdmBuffer+cplt*(PDM_BUFFERSIZE/2)), pcmData);
 	}
 }
 ```
@@ -125,12 +134,11 @@ Maintenant que l'on à un pointeur de 64-bits sur notre tableau de 8-bits, on pe
 Pour compter les bits à 1 on utilise une fonciton integré au compilateur: `__builtin_popcount`, cela nous permet donc d'obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillon _PDM_ ce retrouve réduit à 1 échantillon _PCM_.
 
 ```c
-void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmBuffer){
+void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmData){
 	uint64_t* pdmFrameBuffer = pdmBuffer;
 
-
 	for (int frameNbr=0; frameNbr<NB_FRAME_IN_PDM_BUFFERSIZE/2; frameNbr++){
-		pcmBuffer[frameNbr] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
+		pcmData[pcmDataIndex++] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
 	}
 }
 ```
@@ -146,24 +154,13 @@ Ce qui nous permet d'avoir le code suivant:
 
 ```c
 while (recording){
-	if(dmaLSBFull || dmaMSBFull){ // si l'une des moitié du DMA est pleine
-			if (dmaMSBFull){ 
-				dmaMSBFull = 0; // remise à 0 du flag
-				pdm2pcm((uint8_t*)(pdmBuffer+PDM_BUFFERSIZE/2), pcmBuffer);
-			}
-			else {
-				dmaLSBFull = 0;
-				pdm2pcm(pdmBuffer, pcmBuffer);
-			}
+	if(half){
+		half = 0;
+		pdm2pcm((uint8_t*)(pdmBuffer+cplt*(PDM_BUFFERSIZE/2)), pcmData);
 
-		// ajout des données pcm convertis aux données finale
-		for(int i = 0; i<PCM_BUFFERSIZE; i++){
-			pcmData[pcmDataIndex]=pcmBuffer[i];
-			pcmDataIndex++;
-			if(pcmDataIndex >= PCM_NB_SAMPLE){
-				recording = 0;
-				HAL_SAI_DMAStop(&hsai_BlockA1);
-			}
+		if(pcmDataIndex >= PCM_NB_SAMPLE){
+			recording = 0;
+			HAL_SAI_DMAStop(&hsai_BlockA1);
 		}
 	}
 }
