@@ -208,19 +208,25 @@ Il faut donc savoir qu'elle partie du DMA est plein pour procédé à la convers
 <li>Une intérruption pour déterminer si la moitié du DMA est plein: <br />
 <code>void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
 <li>Une intérruption pour déterminer si le DMA est plein: <br />
-<code>void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
+<code>void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
 </ol>
-<p>Grâce à c'est fonction on peut facilement déterminer qu'elle partie du DMA est pleine et doit être convertis en PCM.</p>
+<p>Par exemple si on utilise c'est fonctions d'intérruptions avec deux flags, <code>cplt</code> et <code>half</code>. Si <code>half</code> vaut 1 alors la première moitié du DMA est prête, si c'est <code>cplt</code> dans ce cas c'est la seconde. </p>
+<pre><code class="language-c">void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai){
+	cplt = 1;
+ 	half = 1;
+}
+
+void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
+  	cplt = 0;
+	half = 1;
+}
+
+</code></pre>
+<p>Maintenant qu'on à des flags il ne reste plus qu'à les utiliser pour traité. Si <code>half</code> vaut 1 alors on commence le traitement, si <code>cplt</code> vaut 0 alors on prends la première moitié sinon la seconde.</p>
 <pre><code class="language-c">while (recording){
-	if(dmaLSBFull || dmaMSBFull){ // si l'une des moitié du DMA est pleine
-			if (dmaMSBFull){ 
-				dmaMSBFull = 0; // remise à 0 du flag
-				pdm2pcm((uint8_t*)(pdmBuffer+PDM_BUFFERSIZE/2), pcmBuffer);
-			}
-			else {
-				dmaLSBFull = 0;
-				pdm2pcm(pdmBuffer, pcmBuffer);
-			}
+	if(half){
+		half = 0;
+		pdm2pcm((uint8_t*)(pdmBuffer+cplt*(PDM_BUFFERSIZE/2)), pcmData);
 	}
 }
 </code></pre>
@@ -235,12 +241,11 @@ C'est dans le permiers argumets, où l'on donne le tableau des valeurs pdm qu'il
 <p>Il est important de noter que dans la partie <a href="../acquisition/acquisition.html">acquisition</a>, nous avons configurer le <em>SAI</em> avec une longuer de frame de 64 bits et un type de données sur 8 bits. Nos valeurs dans le dma sont donc sur 8 bits. Nous on souhaite faire la somme du nombre de bit à 1 dans une frame (64-bits), pour cela on va créer un pointeur sur 64 bits vers notre tableau de 8 bits qui contient les données <em>PDM</em>: <code>uint64_t* pdmFrameBuffer = pdmBuffer;</code> 
 Maintenant que l'on à un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourire tout les frames de notre acquisition à l'ai d'une boucle <code>for</code>. </p>
 <p>Pour compter les bits à 1 on utilise une fonciton integré au compilateur: <code>__builtin_popcount</code>, cela nous permet donc d'obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillon <em>PDM</em> ce retrouve réduit à 1 échantillon <em>PCM</em>.</p>
-<pre><code class="language-c">void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmBuffer){
+<pre><code class="language-c">void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmData){
 	uint64_t* pdmFrameBuffer = pdmBuffer;
 
-
 	for (int frameNbr=0; frameNbr&lt;NB_FRAME_IN_PDM_BUFFERSIZE/2; frameNbr++){
-		pcmBuffer[frameNbr] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
+		pcmData[pcmDataIndex++] = (uint32_t)__builtin_popcount(pdmFrameBuffer[frameNbr]);
 	}
 }
 </code></pre>
@@ -250,24 +255,13 @@ Pour cela on à un tableau <code>pcmData</code> qui à une longeur de 48 000 éc
 Si <code>pcmData</code> est plein, dans ce cas il faut arrêter l'enregistrement.</p>
 <p>Ce qui nous permet d'avoir le code suivant:</p>
 <pre><code class="language-c">while (recording){
-	if(dmaLSBFull || dmaMSBFull){ // si l'une des moitié du DMA est pleine
-			if (dmaMSBFull){ 
-				dmaMSBFull = 0; // remise à 0 du flag
-				pdm2pcm((uint8_t*)(pdmBuffer+PDM_BUFFERSIZE/2), pcmBuffer);
-			}
-			else {
-				dmaLSBFull = 0;
-				pdm2pcm(pdmBuffer, pcmBuffer);
-			}
+	if(half){
+		half = 0;
+		pdm2pcm((uint8_t*)(pdmBuffer+cplt*(PDM_BUFFERSIZE/2)), pcmData);
 
-		// ajout des données pcm convertis aux données finale
-		for(int i = 0; i&lt;PCM_BUFFERSIZE; i++){
-			pcmData[pcmDataIndex]=pcmBuffer[i];
-			pcmDataIndex++;
-			if(pcmDataIndex &gt;= PCM_NB_SAMPLE){
-				recording = 0;
-				HAL_SAI_DMAStop(&amp;hsai_BlockA1);
-			}
+		if(pcmDataIndex &gt;= PCM_NB_SAMPLE){
+			recording = 0;
+			HAL_SAI_DMAStop(&amp;hsai_BlockA1);
 		}
 	}
 }
