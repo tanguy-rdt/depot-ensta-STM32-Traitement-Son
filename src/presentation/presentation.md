@@ -6,7 +6,7 @@
 
 Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.
 
-Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de GIT pour certains membres du groupe.
+Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de Git.
 
 Nous avons illustré notre apprentissage dans la rubrique [Exemples](#exemples), comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...
 
@@ -48,18 +48,31 @@ flowchart LR
 
 ## Matériel
 
-Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.
+Pour mener à bien ce projet, nous avons utilisé:
+- une carte _STM32F4290I-DISC1_
+- un micro PDM _Adafruit 3492_
+- une sortie Jack
+- un casque
 
-![](./img/stm32.png)
+<p align="center">
+  <img src="./img/stm32.png" alt="stm32" width="40%" height="40%" align="center">
+  <img src="./img/micro.jpg" alt="micro" width="40%" height="40%" align="center">
+</p>
 
-![](./img/micro.jpg)
+
 
 
 ## Utilisation
 
-Pour tester le projet, vous aurez besoin du materiel cité précédemment. Suivez les instructions suivantes :
+#### Flashage de la carte
 
-- Connectez la carte STM32 à votre pc via le periphérique ST-Link et lancer le logiciel STM32CubeIDE.
-- Ouvrez le projet récupérable sur le git et flashez la carte avec le code main.c
-- Connectez le haut parleur ou le casque audio sur les pin.
-- Appuyez sur le bouton noir pour lancer/recommencer l'enregistrement, puis appuyez sur le bouton bleu pour le jouer.
+1. À partir de _CubeIDE_: \
+  Vous pouvez directement cloner notre dépot puis l'ouvrir à l'aide CubeIDE. Si vous utiliser le même matériel dans ce cas aucun changement n'est nécessaire, il suffit de connecter la carte à votre pc via le periphérique ST-Link et de flasher la carte.
+
+2. À partir des binaires: \
+   Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous faire apparaitre un nouveau stockage. Si c'est le cas il suffit de placer les binaires dans ce stockage comme si on le mettaiis sur une clé USB
+
+#### Enregistrement et diffusion
+
+Une fois que la carte est flashé, l'enregistrement démarre automatiquement. Si vous n'avez pas eu le temps d'enregistrer votre vous pouvez appuyer sur le boutton reset pour relancer le programme. Quand vous étes satisfait de l'enregistrement il ne reste plus qu'a appuyer sur le _user button_ pour lancer l'audio 
+
