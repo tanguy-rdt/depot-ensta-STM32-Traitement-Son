@@ -15,7 +15,7 @@ Après avoir atteint une certaine maitrises de ces différents aspects nous avon
 ![](./img/schéma_gen.png)
 
 
-Vue schématique du projet:
+Vue schématique du projet :
 
 ```mermaid
 flowchart LR
@@ -48,9 +48,9 @@ flowchart LR
 
 ## Matériel
 
-Pour mener à bien ce projet, nous avons utilisé:
-- une carte _STM32F4290I-DISC1_
-- un micro PDM _Adafruit 3492_
+Pour mener à bien ce projet, nous avons utilisé :
+- une carte _STM32F4290I-DISC1_
+- un micro PDM _Adafruit 3492_
 - une sortie Jack
 - un casque
 
@@ -66,13 +66,13 @@ Pour mener à bien ce projet, nous avons utilisé:
 
 #### Flashage de la carte
 
-1. À partir de _CubeIDE_: \
-  Vous pouvez directement cloner notre dépot puis l'ouvrir à l'aide CubeIDE. Si vous utiliser le même matériel dans ce cas aucun changement n'est nécessaire, il suffit de connecter la carte à votre pc via le periphérique ST-Link et de flasher la carte.
+1. À partir de _CubeIDE_ : \
+  Vous pouvez directement cloner notre dépôt puis l’ouvrir à l’aide CubeIDE. Si vous utilisez le même matériel dans ce cas aucun changement n’est nécessaire, il suffit de connecter la carte à votre pc via le périphérique ST-Link et de flasher la carte.
 
-2. À partir des binaires: \
-   Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous faire apparaitre un nouveau stockage. Si c'est le cas il suffit de placer les binaires dans ce stockage comme si on le mettaiis sur une clé USB
+2. À partir des binaires : \
+   Connecter la carte à votre pc via le périphérique ST-Link, ce qui devrait vous faire apparaitre un nouveau stockage. Si c’est le cas, il suffit de placer les binaires dans ce stockage comme si on le mettait sur une clé USB.
 
 #### Enregistrement et diffusion
 
-Une fois que la carte est flashé, l'enregistrement démarre automatiquement. Si vous n'avez pas eu le temps d'enregistrer votre vous pouvez appuyer sur le boutton reset pour relancer le programme. Quand vous étes satisfait de l'enregistrement il ne reste plus qu'a appuyer sur le _user button_ pour lancer l'audio 
+Une fois que la carte est flashée, l’enregistrement démarre automatiquement. Si vous n’avez pas eu le temps d’enregistrer votre, vous pouvez appuyer sur le bouton reset pour relancer le programme. Quand vous êtes satisfait de l’enregistrement, il ne reste plus qu’à appuyer sur le _user button_ pour lancer l’audio. 
 

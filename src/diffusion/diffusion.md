@@ -1,16 +1,16 @@
 # Diffusion
 
-La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAc via le DMA et générer le signal vers une sortie audio, casque, hauts-parleurs... 
+La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAC via le DMA et générer le signal vers une sortie audio, casque, haut-parleurs... 
 
-## Methodes utilisation du DAC
+## Méthodes utilisation du DAC
 
-Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc
+Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc.
 
 Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). 
 
-## Methodes amplificateur
+## Méthodes amplificatrices
 
-Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons determiné précedemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :
+Le signal de sortie peut être amplifié pour rehausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons déterminé précédemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :
 
 $$ Gain_{max} = \frac{4096}{64} = 64$$
 
@@ -29,16 +29,16 @@ On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 ind
   <img src="./img/DAC_config2.png" alt="screenV0" width="350" height="350">
 
 </p>
-Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
-En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.
+Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonnage à 48kHz.
+En suivant un exemple d'une doc sur internet, nous avons retenu 72Mhz pour la CLK.
 
 ![alt text](./img/clock_timer.png)
 
-Une fois la configuration enregistré, nous pouvons générer le code.
+Une fois la configuration enregistrée, nous pouvons générer le code.
 
 ### Ajout de l'amplification
 
-Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.
+Avant de générer le signal, nous avons fait le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.
 
 ```c
 for (int i = 0; i < PCM_NB_SAMPLE; i++){
