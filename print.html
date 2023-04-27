@@ -217,7 +217,7 @@ Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous
 <ul>
 <li><a href="acquisition/acquisition.html#acquisition">Acquisition</a>
 <ul>
-<li><a href="acquisition/acquisition.html#pdm">PDM</a></li>
+<li><a href="acquisition/acquisition.html#le-pdm">Le PDM</a></li>
 <li><a href="acquisition/acquisition.html#sai">SAI</a></li>
 <li><a href="acquisition/acquisition.html#dma">DMA</a></li>
 <li><a href="acquisition/acquisition.html#pratique">Pratique</a></li>
@@ -235,14 +235,42 @@ Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous
 <p>La broche nommée <em>LR</em> sur le schéma ci-dessus est une broche de sélection de canal du microphone qui peut être connectée soit à Vdd, soit à GND. En fonction du canal selectionné, on choisit si le microphone émet les données sur les fronts montants ou descendant de l'horloge. Le front d'échantillonnage de l'horloge SAI doit être configuré en conséquence. Selon la documentation (voir ci-dessous), on a le choix entre 16 KHz ou 48 KHz pour <em>Fe</em>, nous avons fait le choix de 48 KHz puisque cela nous induit une meilleure qualité audio. Le front d'échantillonage de l'horloge SAI sera donc de 3.072 MHz. </p>
 <p><img src="acquisition/./img/Front_Echantillonage.png" alt="" /></p>
 <p>Les échantillons audio en entrée sont acquis par broche de sortie de données (DOUT) du microphone numérique via la broche de données série (SD), sur le schéma ci-dessous on voit que c'est la sortie PE6. </p>
-<p><img src="acquisition/./img/Broche_SD.png" alt="" /></p>
+<p align="center">
+  <img src="acquisition/./img/Broche_SD.png" alt="Broche_SD" width="40%" height="40%" align="center">
+</p>
 <h2 id="dma"><a class="header" href="#dma">DMA</a></h2>
 <p>Le DMA (<em>Direct Memory Access</em>) soit accès direct à la mémoire permet de stocker directement des données venant d'un périphérique en mémoire principale de la machine. C'est à dire que le microprocesseur n'intervient pas lors du transfert. La conclusion du transfert de donnée peut être signalée par interruption, cela sera utile dans le cas de notre projet. Le DMA est surtout utile quand on travail avec de grandes quantités de données, le processeur peut rapidement être ralenti si tous les octets doivent passer par l'unité centrale. L'utilisation du DMA permettra donc de transférer des données sans qu'aucun code ne soit exécuté.</p>
 <p>Voici un schéma explicatif pour mieux comprendre le principe du DMA : </p>
 <p>Schéma simplifié d'un transfert de mémoire dans un microprocesseur</p>
-<p><img src="acquisition/./img/CPU.png" alt="" /></p>
+<pre class="mermaid">flowchart LR
+    subgraph STM32
+        SAI
+        CPU
+        RAM
+        DAC
+    end
+
+    CPU&lt;--&gt;SAI
+    CPU&lt;--&gt;RAM
+    CPU&lt;--&gt;DAC
+</pre>
 <p>Schéma d'un transfert de mémoire avec l'aide du DMA </p>
-<p><img src="acquisition/./img/DMA.png" alt="" /></p>
+<pre class="mermaid">flowchart TB
+    subgraph STM32
+        SAI
+        DMA1
+        DMA2
+        CPU
+        RAM
+        DAC
+    end
+
+    SAI&lt;--&gt;DMA1
+    DAC&lt;--&gt;DMA2
+    DMA1&lt;--&gt;RAM
+    DMA2&lt;--&gt;RAM
+    CPU&lt;--&gt;RAM
+</pre>
 <p>Pendant que les données sont transférées avec le DMA, l'unité centrale peut travailler sur d'autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.</p>
 <h2 id="pratique"><a class="header" href="#pratique">Pratique</a></h2>
 <p>Dans cette partie on va voir dans un premier temps la configuration de l'horloge et du SAI en mode DMA et dans un second temps le code implémenté pour la réception via le SAI en mode DMA. </p>
@@ -253,8 +281,7 @@ Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous
 <p>Configuration du DMA lié au SAI </p>
 <p><img src="acquisition/./img/Config_SAI_DMA.png" alt="" /></p>
 <p>Code pour l'acquisition du signal audio </p>
-<pre><code class="language-c">
-#define PDM_DATA_SIZE 8
+<pre><code class="language-c">#define PDM_DATA_SIZE 8
 #define PDM_NB_SAMPLE_BY_FRAME PDM_FRAME_LENGHT/PDM_DATA_SIZE
 #define NB_FRAME_IN_PDM_BUFFERSIZE 20
 #define PDM_BUFFERSIZE PDM_NB_SAMPLE_BY_FRAME*NB_FRAME_IN_PDM_BUFFERSIZE
@@ -263,7 +290,6 @@ uint8_t pdmBuffer[PDM_BUFFERSIZE];
 
 HAL_SAI_Receive_DMA(&amp;hsai_BlockA1, (uint8_t *)pdmBuffer, PDM_BUFFERSIZE/2);
 HAL_TIM_Base_Start(&amp;htim2);
-
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="conversion-des-données-pdm--pcm"><a class="header" href="#conversion-des-données-pdm--pcm">Conversion des données PDM → PCM</a></h1>
 <h2 id="le-pcm"><a class="header" href="#le-pcm">Le PCM</a></h2>
