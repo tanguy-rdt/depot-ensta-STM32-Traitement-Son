@@ -150,12 +150,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="diffusion"><a class="header" href="#diffusion">Diffusion</a></h1>
-<p>La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAc via le DMA et générer le signal vers une sortie audio, casque, hauts-parleurs... </p>
-<h2 id="methodes-utilisation-du-dac"><a class="header" href="#methodes-utilisation-du-dac">Methodes utilisation du DAC</a></h2>
-<p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc</p>
+<p>La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAC via le DMA et générer le signal vers une sortie audio, casque, haut-parleurs... </p>
+<h2 id="méthodes-utilisation-du-dac"><a class="header" href="#méthodes-utilisation-du-dac">Méthodes utilisation du DAC</a></h2>
+<p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc.</p>
 <p>Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). </p>
-<h2 id="methodes-amplificateur"><a class="header" href="#methodes-amplificateur">Methodes amplificateur</a></h2>
-<p>Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons determiné précedemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :</p>
+<h2 id="méthodes-amplificatrices"><a class="header" href="#méthodes-amplificatrices">Méthodes amplificatrices</a></h2>
+<p>Le signal de sortie peut être amplifié pour rehausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons déterminé précédemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :</p>
 <p>$$ Gain_{max} = \frac{4096}{64} = 64$$</p>
 <p>Le Gain max est donc de 64.</p>
 <h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
@@ -165,12 +165,12 @@
 <img src="./img/DAC_config.png" alt="screenV0" width="350" height="350" >
 <img src="./img/DAC_config2.png" alt="screenV0" width="350" height="350">
 </p>
-Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonage à 48kHz.
-En suivant un exemple d'une doc sur internet nous avons retenu 72Mhz pour la CLK.
+Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonnage à 48kHz.
+En suivant un exemple d'une doc sur internet, nous avons retenu 72Mhz pour la CLK.
 <p><img src="./img/clock_timer.png" alt="alt text" /></p>
-<p>Une fois la configuration enregistré, nous pouvons générer le code.</p>
+<p>Une fois la configuration enregistrée, nous pouvons générer le code.</p>
 <h3 id="ajout-de-lamplification"><a class="header" href="#ajout-de-lamplification">Ajout de l'amplification</a></h3>
-<p>Avant de générer le signal, nous avons fais le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.</p>
+<p>Avant de générer le signal, nous avons fait le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.</p>
 <pre><code class="language-c">for (int i = 0; i &lt; PCM_NB_SAMPLE; i++){
  	  pcmData[i] = pcmData[i] * GAIN;
    }

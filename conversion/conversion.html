@@ -151,42 +151,42 @@
                     <main>
                         <h1 id="conversion-des-données-pdm--pcm"><a class="header" href="#conversion-des-données-pdm--pcm">Conversion des données <em>PDM</em> → <em>PCM</em></a></h1>
 <h2 id="le-pcm"><a class="header" href="#le-pcm">Le PCM</a></h2>
-<p>Le <em>PCM</em> (<em>Pulse Code With Modulation</em>), est un signal numérique produit à la suite d'une chaîne d'opération: Échantillonnage, quantification et codage. <br />
-Comme on peut le constater sur la figure suivante le signal est échantilloné à une fréquence <em>fe</em> et chaque échantillon représente une impulsion à une certaine amplitude.</p>
+<p>Le <em>PCM</em> (<em>Pulse Code With Modulation</em>), est un signal numérique produit à la suite d’une chaîne d’opération : Échantillonnage, quantification et codage. <br />
+Comme on peut le constater sur la figure suivante le signal est échantillonné à une fréquence <em>fe</em> et chaque échantillon représente une impulsion à une certaine amplitude.</p>
 <p><img src="./img/pcm.png" alt="" /></p>
-<p>Si l'on compare l'allure d'un signal <em>PDM</em> à celle d'un signal <em>PCM</em>, on remarque 2 différences principales:</p>
+<p>Si l’on compare l’allure d’un signal <em>PDM</em> à celle d’un signal <em>PCM</em>, on remarque 2 différences principales :</p>
 <ol>
-<li>La fréquence d'échantillonnage du signal <em>PDM</em> est plus importante que celle du signal <em>PCM</em></li>
-<li>Le signal <em>PDM</em> possède des amplitudes binaires (0-1) alors que l'amplitude du <em>PCM</em> est numériques.</li>
+<li>La fréquence d’échantillonnage du signal <em>PDM</em> est plus importante que celle du signal <em>PCM</em></li>
+<li>Le signal <em>PDM</em> possède des amplitudes binaires (0-1) alors que l’amplitude du <em>PCM</em> est numérique.</li>
 </ol>
 <p><img src="./img/pdm_pcm.png" alt="" /></p>
 <h1 id="conversion"><a class="header" href="#conversion">Conversion</a></h1>
 <h2 id="conversion-selon-stm"><a class="header" href="#conversion-selon-stm">Conversion selon STM</a></h2>
-<p>Ils existes plusieurs solutions, pour réaliser une conversion <em>PDM</em> vers <em>PCM</em>. Selon la documentation de <em>STM32</em> il est conséillé de suivre la procédure suivante :</p>
+<p>Il existe plusieurs solutions, pour réaliser une conversion <em>PDM</em> vers <em>PCM</em>. Selon la documentation de <em>STM32</em> il est conseillé de suivre la procédure suivante :</p>
 <p><img src="./img/conversion.png" alt="" /></p>
-<p>Il faut dans un premier temps utilisé un filtre passe-bas pour convertir les données <em>PDM</em> en <em>PCM</em>. La convertion ce fait grâce à un filtre <em>FIR</em>, l'objectif est de multiplier les 
-échantillon <em>PDM</em> par les coéficient du filtre et de faire une somme pondéré. Au final on se retrouve avec des données numériques, c'est à dire un signal <em>PCM</em></p>
+<p>Il faut dans un premier temps utiliser un filtre passe-bas pour convertir les données <em>PDM</em> en <em>PCM</em>. La conversion se fait grâce à un filtre <em>FIR</em>, l’objectif est de multiplier les 
+échantillons <em>PDM</em> par les coefficients du filtre et de faire une somme pondérée. Au final on se retrouve avec des données numériques, c’est-à-dire un signal <em>PCM</em></p>
 <p><img src="./img/fir.png" alt="" /></p>
-<p>Ce filtre permet également de réduir la fréquence d'échantillonage, mais insuffisament. Pour obtenir la fréquence d'échantillonage du <em>PCM</em> il faut procéder à une décimation, avec un facteur de décimation approprié.</p>
+<p>Ce filtre permet également de réduire la fréquence d’échantillonnage, mais insuffisamment. Pour obtenir la fréquence d’échantillonnage du <em>PCM</em> il faut procéder à une décimation, avec un facteur de décimation approprié.</p>
 <p><img src="./img/d%C3%A9cimation.png" alt="" /></p>
 <h2 id="notre-conversion"><a class="header" href="#notre-conversion">Notre conversion</a></h2>
-<p>Dans le cas du projet, nous avons simplifié la conversion. Nnous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu'en plus de décimé notre signal on va convertir nos bits en données numériques, c'est à dire en <em>PCM</em>.</p>
+<p>Dans le cas du projet, nous avons simplifié la conversion. Nous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu’en plus de décimer notre signal, on va convertir nos bits en données numériques, c’est-à-dire en <em>PCM</em>.</p>
 <p><img src="./img/conversion2.png" alt="" /></p>
-<p>Comme expliqué précédement le <em>PDM</em> est configuré à une fréquence d'échantillonage de <em>3.072 MHz</em>, ce qui est beaucoup plus important que la fréquence cible du <em>PCM</em> qui est de <em>48kHz</em>. L'objectif est donc de réduire la fréquence du signal <em>PDM</em>. <br />
-La décimation permet de réduire la fréquence d'échantillonage d'un signal en prenant seulement un échanitillon tous les n-échantillons: </p>
+<p>Comme expliqué précédemment, le <em>PDM</em> est configuré à une fréquence d’échantillonnage de <em>3,072 MHz</em>, ce qui est beaucoup plus important que la fréquence cible du <em>PCM</em> qui est de <em>48 kHz</em>. L’objectif est donc de réduire la fréquence du signal <em>PDM</em>. <br />
+La décimation permet de réduire la fréquence d’échantillonnage d’un signal en prenant seulement un échantillon tous les n-échantillons : </p>
 <p><img src="./img/d%C3%A9cimation.png" alt="" /></p>
-<p>C'est donc idéal pour notre cas d'utilisation. <br />
-Pour déterminer le facteur de décimation on peut appliquer la formule de la figure précédente. Après calcul on trouve un facteur de décimation de 64. Si on prend donc 1 échantillon <em>PDM</em> tout les 64 échantillons on obtiendra un signal avec une fréquence de <em>48kHz</em>. <br />
-Seulement, prendre 1 échantillon tout les n-échantillons, permet uinquement de réduire la fréquence d'échantillonage du signal, pas de convertir en <em>PDM</em> → <em>PCM</em>. On va donc compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d'obtenir une valeur entre 0 et 64. 
-Au final on obtiendra un signal <em>PCM</em> avec un certain nombres d'impulsions, des amplitudes situé entre 0 et 64 avec une fréquence d'échantillonage de <em>48kHz</em>.</p>
+<p>C’est donc idéal pour notre cas d’utilisation. <br />
+Pour déterminer le facteur de décimation on peut appliquer la formule de la figure précédente. Après calcul on trouve un facteur de décimation de 64. Si on prend donc 1 échantillon <em>PDM</em> tout les 64 échantillons, on obtiendra un signal avec une fréquence de <em>48 kHz</em>. <br />
+Seulement, prendre 1 échantillon tous les n-échantillons, permet uniquement de réduire la fréquence d’échantillonnage du signal, pas de convertir en <em>PDM</em> → <em>PCM</em>. On va donc compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d’obtenir une valeur entre 0 et 64. 
+Au final on obtiendra un signal <em>PCM</em> avec un certain nombre d’impulsions, des amplitudes situées entre 0 et 64 avec une fréquence d’échantillonnage de <em>48 kHz</em>.</p>
 <p><img src="./img/decimation2.png" alt="" /></p>
 <h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
 <h3 id="variables"><a class="header" href="#variables">Variables</a></h3>
-<p>Nous avons besoins d'un certains nombre de variables. </p>
+<p>Nous avons besoin d’un certain nombre de variables. </p>
 <ol>
 <li>Le <code>pdmBuffer</code> présenter à la partie précédente qui contient les valeurs <em>PDM</em> du <em>DMA</em></li>
-<li>Le <code>pcmBuffer</code>, il contiendra les données <em>PCM</em> convertis d'un demi <em>DMA</em> </li>
-<li>le <code>pcmData</code>, il contiendra toutes les données <em>PCM</em> convertis. </li>
+<li>Le <code>pcmBuffer</code>, il contiendra les données <em>PCM</em> converties d’un demi <em>DMA</em> </li>
+<li>le <code>pcmData</code>, il contiendra toutes les données <em>PCM</em> converties. </li>
 </ol>
 <pre><code class="language-c">#define NB_FRAME_IN_PDM_BUFFERSIZE 20
 #define PDM_BUFFERSIZE PDM_NB_SAMBLE_BY_FRAME*NB_FRAME_IN_PDM_BUFFERSIZE
@@ -201,16 +201,16 @@ uint32_t pcmBuffer[PCM_BUFFERSIZE];
 uint32_t pcmData[PCM_NB_SAMPLE];
 </code></pre>
 <h3 id="lecture-du-dma"><a class="header" href="#lecture-du-dma">Lecture du DMA</a></h3>
-<p>Comme expliqué dans la partie de <a href="../acquisition/acquisition.html">l'acquisition</a>, nous travaillons en demi <em>DMA</em> pour des soucis de stockage et de conversion en temps réel. Quand un demi <em>DMA</em> est plein, les données <em>PDM</em> sont disponible pour être convertis en <em>PCM</em>. <br />
-Il faut donc savoir qu'elle partie du <em>DMA</em> est plein pour procédé à la conversion. </p>
-<p>STM nous donne accès à deux fonctions d'interruptions que l'on peut modifier pour mettre des flags à 1.</p>
+<p>Comme expliqué dans la partie de <a href="../acquisition/acquisition.html">l’acquisition</a>, nous travaillons en demi <em>DMA</em> pour des soucis de stockage et de conversion en temps réel. Quand un demi <em>DMA</em> est plein, les données <em>PDM</em> sont disponibles pour être converties en <em>PCM</em>. <br />
+Il faut donc savoir qu’elle partit du <em>DMA</em> est plein pour procédé à la conversion. </p>
+<p>STM nous donne accès à deux fonctions d’interruptions que l’on peut modifier pour mettre des flags à 1.</p>
 <ol>
-<li>Une intérruption pour déterminer si la moitié du <em>DMA</em> est plein: <br />
+<li>Une interruption pour déterminer si la moitié du <em>DMA</em> est plein : <br />
 <code>void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
-<li>Une intérruption pour déterminer si le <em>DMA</em> est plein: <br />
+<li>Une interruption pour déterminer si le <em>DMA</em> est plein : <br />
 <code>void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
 </ol>
-<p>Par exemple si on utilise c'est fonctions d'intérruptions avec deux flags, <code>cplt</code> et <code>half</code>. Si <code>half</code> vaut 1 alors la première moitié du <em>DMA</em> est prête, si c'est <code>cplt</code> dans ce cas c'est la seconde. </p>
+<p>Par exemple si on utilise c’est fonctions d’interruptions avec deux flags, <code>cplt</code> et <code>half</code>. Si <code>half</code> vaut 1 alors la première moitié du <em>DMA</em> est prête, si c’est <code>cplt</code> dans ce cas c’est la seconde. </p>
 <pre><code class="language-c">void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai){
 	cplt = 1;
  	half = 1;
@@ -222,7 +222,7 @@ void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
 }
 
 </code></pre>
-<p>Maintenant qu'on à des flags il ne reste plus qu'à les utiliser pour traité. Si <code>half</code> vaut 1 alors on commence le traitement, si <code>cplt</code> vaut 0 alors on prends la première moitié sinon la seconde.</p>
+<p>Maintenant qu’on à des flags il ne reste plus qu’à les utiliser pour réaliser le traitement. Si <code>half</code> vaut 1 alors on commence le traitement, si <code>cplt</code> vaut 0 alors on prend la première moitié sinon la seconde.</p>
 <pre><code class="language-c">while (recording){
 	if(half){
 		half = 0;
@@ -230,17 +230,17 @@ void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
 	}
 }
 </code></pre>
-<p>Chaque interrupion on execute la fonction de conversion <code>pcm2pdm</code> avec en premier argument les donnés <em>PDM</em> (données dans le DMA) à convertir et en deuxième argument un tableau vide qui va nous permettre
-de récuperer les données <em>PCM</em> convertis. <br />
-C'est dans le permiers arguments, où l'on donne le tableau des valeurs <em>pdm</em> qu'il faut spécifier sur qu'elle moitié du <em>DMA</em> on va travaillé. </p>
+<p>Chaque interruption on exécute la fonction de conversion <code>pcm2pdm</code> avec en premier argument les données <em>PDM</em> (données dans le DMA) à convertir et en deuxième argument un tableau vide qui va nous permettre
+de récupérer les données <em>PCM</em> convertis. <br />
+C’est dans le premier argument, où l’on donne le tableau des valeurs <em>pdm</em> qu’il faut spécifier sur qu’elle moitié du <em>DMA</em> on va travaillé. </p>
 <ol>
-<li>Si c'est la première moitié, il suffit de lui donné le tableau <code>pdmBuffer</code> en entier. C'est à dire que si notre tableau est de longueur 100, alors on commence à l'élement 0 et dans notre fonction on ira jusqu'à l'élément 49. </li>
-<li>Si c'est la seconde moitié, alors on donne le tableau <code>pdmBuffer+PDM_BUFFERSIZE/2</code>, c'est à dire que si notre tableau est de longueur 100, alors on commence à l'élement 50 et dans notre fonction on ira jusqu'à l'élément 99. </li>
+<li>Si c’est la première moitié, il suffit de lui donner le tableau <code>pdmBuffer</code> en entier. C’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 0 et dans notre fonction on ira jusqu’à l’élément 49. </li>
+<li>Si c’est la seconde moitié, alors on donne le tableau <code>pdmBuffer+PDM_BUFFERSIZE/2</code>, c’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 50 et dans notre fonction on ira jusqu’à l’élément 99. </li>
 </ol>
 <h3 id="conversion-des-données"><a class="header" href="#conversion-des-données">Conversion des données</a></h3>
-<p>Il est important de noter que dans la partie <a href="../acquisition/acquisition.html">acquisition</a>, nous avons configurer le <em>SAI</em> avec une longuer de frame de 64 bits et un type de données sur 8 bits. Nos valeurs dans le <em>DMA</em> sont donc sur 8 bits. Nous on souhaite faire la somme du nombre de bit à 1 dans une frame (64-bits), pour cela on va créer un pointeur sur 64 bits vers notre tableau de 8 bits qui contient les données <em>PDM</em>: <code>uint64_t* pdmFrameBuffer = pdmBuffer;</code> 
-Maintenant que l'on à un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourire tout les frames de notre acquisition à l'ai d'une boucle <code>for</code>. </p>
-<p>Pour compter les bits à 1 on utilise une fonciton integré au compilateur: <code>__builtin_popcount</code>, cela nous permet donc d'obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillon <em>PDM</em> ce retrouve réduit à 1 échantillon <em>PCM</em>.</p>
+<p>Il est important de noter que dans la partie <a href="../acquisition/acquisition.html">acquisition</a>, nous avons configuré le <em>SAI</em> avec une longueur de frame de 64 bits et un type de données sur 8 bits. Nos valeurs dans le <em>DMA</em> sont donc sur 8 bits. Nous on souhaite faire la somme du nombre de bit à 1 dans une frame (64-bits), pour cela on va créer un pointeur sur 64 bits vers notre tableau de 8 bits qui contient les données <em>PDM</em>: <code>uint64_t* pdmFrameBuffer = pdmBuffer;</code> 
+Maintenant que l’on a un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourir tous les frames de notre acquisition à l’ai d’une boucle <code>for</code>. </p>
+<p>Pour compter les bits à 1 on utilise une fonction intégrée au compilateur: <code>__builtin_popcount</code>, cela nous permet donc d’obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillons <em>PDM</em> se retrouve réduit à 1 échantillon <em>PCM</em>.</p>
 <pre><code class="language-c">void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmData){
 	uint64_t* pdmFrameBuffer = pdmBuffer;
 
@@ -249,11 +249,11 @@ Maintenant que l'on à un pointeur de 64-bits sur notre tableau de 8-bits, on pe
 	}
 }
 </code></pre>
-<h3 id="arrêt-de-lenregistrement"><a class="header" href="#arrêt-de-lenregistrement">Arrêt de l'enregistrement</a></h3>
-<p>Les données d'un demi <em>DMA</em> sont maintenant convertissable à l'aide de notre fonction, mais il reste un problème. Il faut stocker c'est valeurs PCM. <br />
-Pour cela on à un tableau <code>pcmData</code> qui à une longeur de 48 000 échantillons, soit 1 seconde d'enregistrement avec une fréquence d'échantillonnage de 48kHz. A chaque fois que l'on obtient de nouvelles données <em>PCM</em> à la suite d'une conversion, il faut ajouter les données de <code>pcmBufer</code> dans <code>pcmData</code>. <br />
-Si <code>pcmData</code> est plein, dans ce cas il faut arrêter l'enregistrement.</p>
-<p>Ce qui nous permet d'avoir le code suivant:</p>
+<h3 id="arrêt-de-lenregistrement"><a class="header" href="#arrêt-de-lenregistrement">Arrêt de l’enregistrement</a></h3>
+<p>Les données d’un demi <em>DMA</em> sont maintenant convertissables à l’aide de notre fonction, mais il reste un problème. Il faut stocker c’est valeurs PCM. <br />
+Pour cela on à un tableau <code>pcmData</code> qui à une longueur de 48 000 échantillons, soit 1 seconde d’enregistrement avec une fréquence d’échantillonnage de 48 kHz. À chaque fois que l’on obtient de nouvelles données <em>PCM</em> à la suite d’une conversion, il faut ajouter les données de <code>pcmBufer</code> dans <code>pcmData</code>. <br />
+Si <code>pcmData</code> est plein, dans ce cas il faut arrêter l’enregistrement.</p>
+<p>Ce qui nous permet d’avoir le code suivant :</p>
 <pre><code class="language-c">while (recording){
 	if(half){
 		half = 0;
