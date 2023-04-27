@@ -156,7 +156,7 @@
 <h1 id="présentation"><a class="header" href="#présentation">Présentation</a></h1>
 <h2 id="explication-du-projet"><a class="header" href="#explication-du-projet">Explication du projet</a></h2>
 <p>Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.</p>
-<p>Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de GIT pour certains membres du groupe.</p>
+<p>Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de Git.</p>
 <p>Nous avons illustré notre apprentissage dans la rubrique <a href="presentation/presentation.html#exemples">Exemples</a>, comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...</p>
 <p>Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :</p>
 <p><img src="presentation/./img/sch%C3%A9ma_gen.png" alt="" /></p>
@@ -188,17 +188,31 @@
     DAC--&gt;CASQUE
 </pre>
 <h2 id="matériel"><a class="header" href="#matériel">Matériel</a></h2>
-<p>Pour mener à bien ce projet, nous avons utilisé une carte STM32F4290I-DISC1, un micro PDM, une sortie Jack, un casque, et le logiciel STM32CubeIDE.</p>
-<p><img src="presentation/./img/stm32.png" alt="" /></p>
-<p><img src="presentation/./img/micro.jpg" alt="" /></p>
-<h2 id="utilisation"><a class="header" href="#utilisation">Utilisation</a></h2>
-<p>Pour tester le projet, vous aurez besoin du materiel cité précédemment. Suivez les instructions suivantes :</p>
+<p>Pour mener à bien ce projet, nous avons utilisé:</p>
 <ul>
-<li>Connectez la carte STM32 à votre pc via le periphérique ST-Link et lancer le logiciel STM32CubeIDE.</li>
-<li>Ouvrez le projet récupérable sur le git et flashez la carte avec le code main.c</li>
-<li>Connectez le haut parleur ou le casque audio sur les pin.</li>
-<li>Appuyez sur le bouton noir pour lancer/recommencer l'enregistrement, puis appuyez sur le bouton bleu pour le jouer.</li>
+<li>une carte <em>STM32F4290I-DISC1</em></li>
+<li>un micro PDM <em>Adafruit 3492</em></li>
+<li>une sortie Jack</li>
+<li>un casque</li>
 </ul>
+<p align="center">
+  <img src="presentation/./img/stm32.png" alt="stm32" width="40%" height="40%" align="center">
+  <img src="presentation/./img/micro.jpg" alt="micro" width="40%" height="40%" align="center">
+</p>
+<h2 id="utilisation"><a class="header" href="#utilisation">Utilisation</a></h2>
+<h4 id="flashage-de-la-carte"><a class="header" href="#flashage-de-la-carte">Flashage de la carte</a></h4>
+<ol>
+<li>
+<p>À partir de <em>CubeIDE</em>: <br />
+Vous pouvez directement cloner notre dépot puis l'ouvrir à l'aide CubeIDE. Si vous utiliser le même matériel dans ce cas aucun changement n'est nécessaire, il suffit de connecter la carte à votre pc via le periphérique ST-Link et de flasher la carte.</p>
+</li>
+<li>
+<p>À partir des binaires: <br />
+Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous faire apparaitre un nouveau stockage. Si c'est le cas il suffit de placer les binaires dans ce stockage comme si on le mettaiis sur une clé USB</p>
+</li>
+</ol>
+<h4 id="enregistrement-et-diffusion"><a class="header" href="#enregistrement-et-diffusion">Enregistrement et diffusion</a></h4>
+<p>Une fois que la carte est flashé, l'enregistrement démarre automatiquement. Si vous n'avez pas eu le temps d'enregistrer votre vous pouvez appuyer sur le boutton reset pour relancer le programme. Quand vous étes satisfait de l'enregistrement il ne reste plus qu'a appuyer sur le <em>user button</em> pour lancer l'audio </p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="acquisition"><a class="header" href="#acquisition">Acquisition</a></h1>
 <ul>
 <li><a href="acquisition/acquisition.html#acquisition">Acquisition</a>
