@@ -4,7 +4,7 @@
   - [Le PDM](#le-pdm)
   - [SAI](#sai)
   - [DMA](#dma)
-  - [Pratique](#pratique)
+  - [Mise en pratique](#mise-en-pratique)
 
 ## Le PDM 
 
@@ -81,7 +81,7 @@ flowchart TB
  Pendant que les données sont transférées avec le DMA, l'unité centrale peut travailler sur d'autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.  
 
 
-## Pratique 
+## Mise en pratique 
 
 Dans cette partie on va voir dans un premier temps la configuration de l'horloge et du SAI en mode DMA et dans un second temps le code implémenté pour la réception via le SAI en mode DMA. 
 

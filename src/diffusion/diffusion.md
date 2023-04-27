@@ -11,12 +11,12 @@ Le DAC peut être configuré pour fonctionner avec différentes résolutions (8,
 ## Methodes amplificateur
 
 Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons determiné précedemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :
-Gain_max = 4096/64 = 64
+
+$$ Gain_{max} = \frac{4096}{64} = 64$$
+
 Le Gain max est donc de 64.
 
 ## Mise en pratique
-
-Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :
 
 ### Configuration du setup
 
