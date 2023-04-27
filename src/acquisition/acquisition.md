@@ -1,7 +1,7 @@
 # Acquisition 
 
 - [Acquisition](#acquisition)
-  - [PDM](#pdm)
+  - [Le PDM](#le-pdm)
   - [SAI](#sai)
   - [DMA](#dma)
   - [Pratique](#pratique)
@@ -29,7 +29,10 @@ La broche nommée _LR_ sur le schéma ci-dessus est une broche de sélection de 
  
 Les échantillons audio en entrée sont acquis par broche de sortie de données (DOUT) du microphone numérique via la broche de données série (SD), sur le schéma ci-dessous on voit que c'est la sortie PE6. 
 
-![](./img/Broche_SD.png)
+
+<p align="center">
+  <img src="./img/Broche_SD.png" alt="Broche_SD" width="40%" height="40%" align="center">
+</p>
 
 ## DMA
 
@@ -40,11 +43,39 @@ Voici un schéma explicatif pour mieux comprendre le principe du DMA :
 
 Schéma simplifié d'un transfert de mémoire dans un microprocesseur
 
-![](./img/CPU.png)
+```mermaid
+flowchart LR
+    subgraph STM32
+        SAI
+        CPU
+        RAM
+        DAC
+    end
+
+    CPU<-->SAI
+    CPU<-->RAM
+    CPU<-->DAC
+```
 
 Schéma d'un transfert de mémoire avec l'aide du DMA 
 
-![](./img/DMA.png)
+```mermaid
+flowchart TB
+    subgraph STM32
+        SAI
+        DMA1
+        DMA2
+        CPU
+        RAM
+        DAC
+    end
+
+    SAI<-->DMA1
+    DAC<-->DMA2
+    DMA1<-->RAM
+    DMA2<-->RAM
+    CPU<-->RAM
+```
 
 
  Pendant que les données sont transférées avec le DMA, l'unité centrale peut travailler sur d'autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.  
@@ -69,7 +100,6 @@ Configuration du DMA lié au SAI
 Code pour l'acquisition du signal audio 
 
 ```c
-
 #define PDM_DATA_SIZE 8
 #define PDM_NB_SAMPLE_BY_FRAME PDM_FRAME_LENGHT/PDM_DATA_SIZE
 #define NB_FRAME_IN_PDM_BUFFERSIZE 20
@@ -79,7 +109,6 @@ uint8_t pdmBuffer[PDM_BUFFERSIZE];
 
 HAL_SAI_Receive_DMA(&hsai_BlockA1, (uint8_t *)pdmBuffer, PDM_BUFFERSIZE/2);
 HAL_TIM_Base_Start(&htim2);
-
 ```
 
 
