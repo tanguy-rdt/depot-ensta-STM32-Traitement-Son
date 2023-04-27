@@ -220,7 +220,7 @@ Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous
 <li><a href="acquisition/acquisition.html#le-pdm">Le PDM</a></li>
 <li><a href="acquisition/acquisition.html#sai">SAI</a></li>
 <li><a href="acquisition/acquisition.html#dma">DMA</a></li>
-<li><a href="acquisition/acquisition.html#pratique">Pratique</a></li>
+<li><a href="acquisition/acquisition.html#mise-en-pratique">Mise en pratique</a></li>
 </ul>
 </li>
 </ul>
@@ -272,7 +272,7 @@ Connecter la carte à votre pc via le periphérique ST-Link, ce qui devrait vous
     CPU&lt;--&gt;RAM
 </pre>
 <p>Pendant que les données sont transférées avec le DMA, l'unité centrale peut travailler sur d'autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.</p>
-<h2 id="pratique"><a class="header" href="#pratique">Pratique</a></h2>
+<h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
 <p>Dans cette partie on va voir dans un premier temps la configuration de l'horloge et du SAI en mode DMA et dans un second temps le code implémenté pour la réception via le SAI en mode DMA. </p>
 <p>Configuration horloge du SAI </p>
 <p><img src="acquisition/./img/Config_Clock_SAI.png" alt="" /></p>
@@ -322,7 +322,7 @@ Pour déterminer le facteur de décimation on peut appliquer la formule de la fi
 Seulement, prendre 1 échantillon tout les n-échantillons, permet uinquement de réduire la fréquence d'échantillonage du signal, pas de convertir en <em>PDM</em> → <em>PCM</em>. On va donc compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d'obtenir une valeur entre 0 et 64. 
 Au final on obtiendra un signal <em>PCM</em> avec un certain nombres d'impulsions, des amplitudes situé entre 0 et 64 avec une fréquence d'échantillonage de <em>48kHz</em>.</p>
 <p><img src="conversion/./img/decimation2.png" alt="" /></p>
-<h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
+<h2 id="mise-en-pratique-1"><a class="header" href="#mise-en-pratique-1">Mise en pratique</a></h2>
 <h3 id="variables"><a class="header" href="#variables">Variables</a></h3>
 <p>Nous avons besoins d'un certains nombre de variables. </p>
 <ol>
@@ -414,11 +414,10 @@ Si <code>pcmData</code> est plein, dans ce cas il faut arrêter l'enregistrement
 <p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc</p>
 <p>Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). </p>
 <h2 id="methodes-amplificateur"><a class="header" href="#methodes-amplificateur">Methodes amplificateur</a></h2>
-<p>Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons determiné précedemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :
-Gain_max = 4096/64 = 64
-Le Gain max est donc de 64.</p>
-<h2 id="mise-en-pratique-1"><a class="header" href="#mise-en-pratique-1">Mise en pratique</a></h2>
-<p>Pour utiliser le DAC sur la carte STM32 on réalise deux étapes clés :</p>
+<p>Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons determiné précedemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :</p>
+<p>$$ Gain_{max} = \frac{4096}{64} = 64$$</p>
+<p>Le Gain max est donc de 64.</p>
+<h2 id="mise-en-pratique-2"><a class="header" href="#mise-en-pratique-2">Mise en pratique</a></h2>
 <h3 id="configuration-du-setup"><a class="header" href="#configuration-du-setup">Configuration du setup</a></h3>
 <p>On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.</p>
 <p align="center">

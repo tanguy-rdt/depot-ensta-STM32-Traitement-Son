@@ -156,7 +156,7 @@
 <li><a href="#le-pdm">Le PDM</a></li>
 <li><a href="#sai">SAI</a></li>
 <li><a href="#dma">DMA</a></li>
-<li><a href="#pratique">Pratique</a></li>
+<li><a href="#mise-en-pratique">Mise en pratique</a></li>
 </ul>
 </li>
 </ul>
@@ -208,7 +208,7 @@
     CPU&lt;--&gt;RAM
 </pre>
 <p>Pendant que les données sont transférées avec le DMA, l'unité centrale peut travailler sur d'autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.</p>
-<h2 id="pratique"><a class="header" href="#pratique">Pratique</a></h2>
+<h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
 <p>Dans cette partie on va voir dans un premier temps la configuration de l'horloge et du SAI en mode DMA et dans un second temps le code implémenté pour la réception via le SAI en mode DMA. </p>
 <p>Configuration horloge du SAI </p>
 <p><img src="./img/Config_Clock_SAI.png" alt="" /></p>
