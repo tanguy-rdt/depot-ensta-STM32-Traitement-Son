@@ -161,13 +161,16 @@
 <h3 id="configuration-du-dac"><a class="header" href="#configuration-du-dac">Configuration du DAC</a></h3>
 <p>On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.</p>
 <p align="center">
-<img src="./img/DAC_config.png" alt="screenV0" width="350" height="350" >
-<img src="./img/DAC_config2.png" alt="screenV0" width="350" height="350">
+  <img src="./img/DAC_config.png" alt="" width="50%" height="50%" >
+  <img src="./img/DAC_config2.png" alt="" width="50%" height="50%">
 </p>
 <p>Nous avons configuré notre SAI pour une acquisition d'un signal sonore avec une <em>fe</em> de 48 kHz, il est donc nécessaire de conserver cette configuration et de la reproduire pour le DAC. </p>
 <p>$$ (PSC+1)(ARR+1)=\frac{CLK_{freq}}{OutputFrequency}=\frac{80MHz}{48kHz}=1666.66$$</p>
 <p>Après calcul, si on choisis une fréquence de 80Mhz, il nous faut un <em>Auto Reload Register</em> de 1665 et un <em>Prescaler</em> de 0 pour obtenir une fréquence d'échantillonage de 48kHz</p>
-<p><img src="./img/clock_timer.png" alt="alt text" /></p>
+<p><img src="./img/clk_timer.png" alt="" /></p>
+<p align="center">
+  <img src="./img/timer2.png" alt="" width="50%" height="50%">
+</p>
 <h3 id="ajout-de-lamplification"><a class="header" href="#ajout-de-lamplification">Ajout de l'amplification</a></h3>
 <p>Avant de générer le signal, nous avons fait le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.</p>
 <pre><code class="language-c">for (int i = 0; i &lt; PCM_NB_SAMPLE; i++){
