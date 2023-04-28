@@ -3,7 +3,7 @@
 ### Préparation du projet
 ![](./img/clear_pinout.png)
 
-### Configuration de la pin connecté à la LED
+### Configuration de la pin connectée à la LED
 ![](./img/pin5.png)
 
 ### Modification du code

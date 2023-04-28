@@ -1,9 +1,9 @@
-# Clignotement d'une led avec un boutton
+# Clignotement d'une LED avec un bouton
 
-> *On considére que la configuration de la led à déjà était faite avec l'exemple 'toggle_led'*
+> *On considère que la configuration de la LED à déjà était faite avec l'exemple 'toggle_led'*
 
 
-### Configuration de la pin connecté au BP
+### Configuration de la pin connectée au BP
 ![](./img/PC13.png)
 
 ### Modification du code

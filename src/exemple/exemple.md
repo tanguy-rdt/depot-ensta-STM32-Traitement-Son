@@ -1,8 +1,8 @@
 # Exemple
 
-> Si certaine capture d'écran ne corresponde pas avec le MCU du _STM32F4290I-DISC1_, c'est parce que certain de c'est examples ont était réaliser sur une nucleo-64. Le principe de fonctionement et de configuration reste le même, seul les pins sont différentes.
+> Si certaine capture d'écran ne correspond pas avec le MCU du _STM32F4290I-DISC1_, c'est parce que certain de c'est exemples ont été réaliser sur une nucleo-64. Le principe de fonctionnement et de configuration reste le même, seuls les pins sont différents.
 
-Pour débuter ce projet nous avons, pu découvrir la carte STM32 et s'est différentes possibilitées à l'aide d'exemples:
+Pour débuter ce projet, nous avons, pu découvrir la carte STM32 et s'est différentes possibilités à l'aide d'exemples:
 
 - [Toggle Led](./toggle_led/toggle_led.md)
 - [Pushbutton Led](./pushbutton_led/pushbutton_led.md)
