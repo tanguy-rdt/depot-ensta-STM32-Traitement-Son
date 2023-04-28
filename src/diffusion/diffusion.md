@@ -21,11 +21,8 @@ $$ Gain_{max} = \frac{4096}{64} = 64$$
 On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.
 
 <p align="center">
-
-  <img src="./img/DAC_config.png" alt="screenV0" width="350" height="350" >
-
-  <img src="./img/DAC_config2.png" alt="screenV0" width="350" height="350">
-
+  <img src="./img/DAC_config.png" alt="" width="50%" height="50%" >
+  <img src="./img/DAC_config2.png" alt="" width="50%" height="50%">
 </p>
 
 Nous avons configuré notre SAI pour une acquisition d'un signal sonore avec une _fe_ de 48 kHz, il est donc nécessaire de conserver cette configuration et de la reproduire pour le DAC. 
@@ -34,7 +31,11 @@ $$ (PSC+1)(ARR+1)=\frac{CLK_{freq}}{OutputFrequency}=\frac{80MHz}{48kHz}=1666.66
 
 Après calcul, si on choisis une fréquence de 80Mhz, il nous faut un _Auto Reload Register_ de 1665 et un _Prescaler_ de 0 pour obtenir une fréquence d'échantillonage de 48kHz
 
-![alt text](./img/clock_timer.png)
+![](./img/clk_timer.png)
+
+<p align="center">
+  <img src="./img/timer2.png" alt="" width="50%" height="50%">
+</p>
 
 
 ### Ajout de l'amplification
