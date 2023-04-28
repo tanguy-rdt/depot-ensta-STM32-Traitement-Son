@@ -52,8 +52,10 @@ Pour mener à bien ce projet, nous avons utilisé :
 - une sortie Jack
 - un casque
 
-![](./img/stm32.png)
-![](./img/micro.png)
+<p align="center">
+  <img src="./img/stm32.png" alt="stm32" width="40%" height="40%" align="center">
+  <img src="./img/micro.png" alt="micro" width="40%" height="40%" align="center">
+</p>
 
 
 ## Utilisation
