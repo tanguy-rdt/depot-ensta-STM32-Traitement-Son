@@ -162,7 +162,6 @@
 </ul>
 <h2 id="le-pdm"><a class="header" href="#le-pdm">Le PDM</a></h2>
 <p>Le PDM (<em>Pulse-Density modulation</em>) soit une modulation par densité d’impulsions est utilisé pour représenter un signal analogique en signal binaire. Le principe est le suivant, on a un signal audio sous sa forme analogique que l’on va chercher à enregistrer. Pour cela, on va coder chaque échantillon du signal sur un seul bit. Chaque échantillon est quantifié à une valeur. Si l’échantillon (postion n) à une valeur inférieure à l’échantillon précédent (position n-1) alors son bit sera codé à 0, sinon si sa valeur est supérieure alors son bit sera codé à 1. C’est donc une comparaison à chaque instant d’échantillonnage avec le précédent qui permettra de moduler notre signal audio. Cette méthode à un nom, la modulation delta. </p>
-<p>Pour mieux visualiser, voici un schéma explicatif :</p>
 <p><img src="./img/PDM_signal.png" alt="" /></p>
 <h2 id="sai"><a class="header" href="#sai">SAI</a></h2>
 <p>Le SAI (<em>Serial Audio Interface</em>) est une interface permettant au microcontrôleur de communiquer avec plusieurs dispositifs audio externes, dont les microphones. Sur le STM32, le SAI a une interface PDM dédiée, ce qui permet directement d’acquérir un signal audio en entrée. Pour notre projet, c’est donc cette interface qui nous intéresse. Si on veut acquérir un signal audio, il faut donc que notre microphone soit connecté au SAI en configuration mono et mode de réception maître. </p>
