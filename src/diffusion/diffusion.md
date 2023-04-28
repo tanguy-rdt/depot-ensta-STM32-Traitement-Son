@@ -2,23 +2,21 @@
 
 La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAC via le DMA et générer le signal vers une sortie audio, casque, haut-parleurs... 
 
-## Méthodes utilisation du DAC
+## DAC
 
 Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc.
 
 Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). 
 
-## Méthodes amplificatrices
+## Amplification du signal PCM
 
-Le signal de sortie peut être amplifié pour rehausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons déterminé précédemment qu'un échantillon (une frame) allait de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul :
+Le signal de sortie peut être amplifié pour rehausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons déterminé précédemment un facteur décimation de 64, donc nos échantillons on une valeur allant de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul suivant.
 
 $$ Gain_{max} = \frac{4096}{64} = 64$$
 
-Le Gain max est donc de 64.
-
 ## Mise en pratique
 
-### Configuration du setup
+### Configuration du DAC
 
 On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 indiquant la pin PA4. Dans notre cas nous activons aussi le DMA et un timer, et un bouton pour jouer le signal enregistré.
 
@@ -29,12 +27,15 @@ On configure le DAC sur la carte en choisissant une sortie, par exemple OUT1 ind
   <img src="./img/DAC_config2.png" alt="screenV0" width="350" height="350">
 
 </p>
-Pour avoir une bonne qualité sonore, on fixe la fréquence d'échantillonnage à 48kHz.
-En suivant un exemple d'une doc sur internet, nous avons retenu 72Mhz pour la CLK.
+
+Nous avons configuré notre SAI pour une acquisition d'un signal sonore avec une _fe_ de 48 kHz, il est donc nécessaire de conserver cette configuration et de la reproduire pour le DAC. 
+
+$$ (PSC+1)(ARR+1)=\frac{CLK_{freq}}{OutputFrequency}=\frac{80MHz}{48kHz}=1666.66$$
+
+Après calcul, si on choisis une fréquence de 80Mhz, il nous faut un _Auto Reload Register_ de 1665 et un _Prescaler_ de 0 pour obtenir une fréquence d'échantillonage de 48kHz
 
 ![alt text](./img/clock_timer.png)
 
-Une fois la configuration enregistrée, nous pouvons générer le code.
 
 ### Ajout de l'amplification
 
@@ -66,9 +67,7 @@ Dans la boucle While du code, on ajoute la condition pour jouer l'enregistrement
 
 Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction `HAL_DAC_Start_DMA()`. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.
 
-Le signal se joue sur `HAL_Delay(NB_SEC_OUTPUT*1000);`  soit une seconde, ce qui représente la limite de la durée du signal stockable.
-
-Enfin, une fois le signal joué on stoppe le DAC à l'aide de la fonction `DAC HAL_DAC_Stop_DMA()`.
+Le signal se joue sur `HAL_Delay(NB_SEC_OUTPUT*1000);`, ce qui représente la durée du signal enregistré avant de se couper avec la fonction `DAC HAL_DAC_Stop_DMA()`.
 
 
 

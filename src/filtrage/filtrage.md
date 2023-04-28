@@ -1,6 +1,6 @@
 # Filtrage
 
-Comme on peut le constater sur l'image suivante d’un signal _PDM_ à une fréquence d'échantillonnage beaucoup plus importante qu'un signal _PCM_.
+Comme on peut le constater sur l'image suivante, un signal _PDM_ à une fréquence d'échantillonnage beaucoup plus importante qu'un signal _PCM_.
 
 ![](./img/pdm_pcm.png)
 
@@ -10,12 +10,12 @@ L'objectif de cette partie consiste donc à obtenir un signal de meilleure quali
 
 ## Les effets d'un signal PDM
 
-C'est des étapes qui ne sera pas directement lié à notre projet, nous allons partir d'un enregistrement audio et nous allons le convertir en _PDM_ pour comprendre les effets de cette modulation et comment les réduire.
+C'est étapes ne seront pas directement liées à notre projet, nous allons partir d'un enregistrement audio et nous allons le convertir en _PDM_ pour comprendre les effets de cette modulation et comment les réduire.
 
 
 ### Lecture d'un signal audio
 
-Dans un premier temps nous devons lire ce signal audio puis l'analyser sa représentation temporelle. On pourra également extraire certaines données essentielles qui pourront nous servir pour la suite.
+Dans un premier temps nous devons lire ce signal audio. On pourra également extraire certaines données essentielles qui pourront nous servir pour la suite.
 
 ```c
 [x, fs] = audioread('bond.wav');
@@ -31,7 +31,7 @@ duree = N/fs
 
 ### Conversion du signal audio vers un signal PDM
 
-Dans un premier temps nous devons réchantillonner notre signal. La fréquence actuelle ne correspond pas à celle que l'on utilise dans notre projet, une fréquence de _3.072MHz_.
+Il est nécessaire de réchantillonner notre signal. La fréquence actuelle ne correspond pas à celle que l'on utilise dans notre projet, une fréquence de _3.072MHz_.
 
 ```c
 fs_new = 3.072e6; 
@@ -41,7 +41,7 @@ x_resampled = resample(x, fs_new, fs);
 
 <br>
 
-Une fois qu'on a la bonne fréquence, on peut réaliser une modulation PDM à l'aide d'une fonction que nous avons réalisée, cette fonction est inspirée de l'algorithme donné par [Wikipédia](https://en.wikipedia.org/wiki/Pulse-density_modulation). Ce qui nous permettra par la suite d'afficher sa représentation temporelle et fréquentielle.
+Une fois qu'on a la bonne fréquence, on peut réaliser une modulation PDM à l'aide d'une fonction que nous avons réalisée, cette fonction est inspirée de l'algorithme donné par [Wikipédia](https://en.wikipedia.org/wiki/Pulse-density_modulation). 
 
 ```c
 function result = modulation_PDM(s, qe)
@@ -74,7 +74,7 @@ On remarque facilement que le signal PDM à majoritairement des hautes fréquenc
 
 ### Traitement du signal PDM
 
-Dans notre projet, nous avons utilisé une décimation pour réaliser la conversion PDM &rarr; PCM. Ici on va optimiser ce processus que nous avons simplifié à l'aide d'un filtre passe-bas. On remarque au final que nous allons réaliser ce qui est préconisé par STM (cf [conversion](../conversion/conversion.md)). Le résultat est similaire, si nous avions réalisé la même procédure sur le STM32, on aurait également pu obtenir notre signal PCM. L'avantage est qu’ici nous allons pouvoir constater les effets négatifs de la modulation PDM.
+Dans notre projet, nous avons utilisé une décimation pour réaliser la conversion PDM &rarr; PCM. Ici on va optimiser ce processus que nous avons simplifié, à l'aide d'un filtre passe-bas. On remarque au final que nous allons réaliser ce qui est préconisé par STM (cf [conversion](../conversion/conversion.md)). 
 
 Pour ce faire, on va utiliser un filtre passe-bas à moyenne glissante sur 64 points ainsi que d'un sous échantillonnage avec un facteur de 64, ce qui correspond également au facteur décimation que nous avons utilisé dans notre projet.
 
@@ -104,7 +104,7 @@ Grâce au filtre nous avons retrouvé l'allure de notre signal audio, mais la re
 
 #### Design du filtre
 
-Nous allons utiliser les données précédemment obtenues suite aux analyses pour désigner notre filtre à l'aide de l'outil Matlab: _filterDesigner_
+Nous allons utiliser les données précédemment obtenues suite aux analyses pour designer notre filtre à l'aide de l'outil Matlab: _filterDesigner_
 
 ![](./img/fda.png)
 
@@ -144,3 +144,8 @@ x_filtered_2 = filter(fir_filter, 1, x_filtered);
 - Jaune &rarr; Signal PDM filtré
 
 On remarque facilement les effets du filtre, nous avons supprimé les hautes fréquences provenant du signal PDM tout en préservant l'allure du signal audio. Si on écoute les trois audios, une nette amélioration est à noter. 
+
+
+## Filtrage de notre signal PCM 
+
+Maintenant que nous avons calculé un filtre qui permet de filtrer les hautes fréquences provenant de notre signal PDM, nous pouvons reproduire ce code dans notre projet en utilisant les paramètres données par matlab.

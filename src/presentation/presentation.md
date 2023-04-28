@@ -6,16 +6,14 @@
 
 Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.
 
-Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants comme le DMA, le DAC etc, ou encore l'utilisation de Git.
+Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants et périphériques comme le DMA, le DAC etc, ou encore l'utilisation de Git.
 
-Nous avons illustré notre apprentissage dans la rubrique [Exemples](#exemples), comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...
+Nous avons illustré notre apprentissage dans la rubrique [Exemples](../exemple/exemple.md), comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...
 
 Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :
 
 ![](./img/schéma_gen.png)
 
-
-Vue schématique du projet :
 
 ```mermaid
 flowchart LR

@@ -33,7 +33,7 @@ Il faut dans un premier temps utiliser un filtre passe-bas pour convertir les do
 
 ![](./img/fir.png)
 
-Ce filtre permet également de réduire la fréquence d’échantillonnage, mais insuffisamment. Pour obtenir la fréquence d’échantillonnage du _PCM_ il faut procéder à une décimation, avec un facteur de décimation approprié.
+Ce filtre permet également de réduire la fréquence d’échantillonnage, mais potentiellement de manière insuffisente. Pour obtenir la fréquence d’échantillonnage adapté du _PCM_ il faut procéder à une décimation, avec un facteur de décimation approprié.
 
 ![](./img/décimation.png)
 
@@ -64,9 +64,9 @@ Au final on obtiendra un signal _PCM_ avec un certain nombre d’impulsions, des
 ### Variables
 
 Nous avons besoin d’un certain nombre de variables. 
-1. Le `pdmBuffer` présenter à la partie précédente qui contient les valeurs _PDM_ du _DMA_
+1. Le `pdmBuffer` présentê à la partie précédente qui contient les valeurs _PDM_ du _DMA_
 2. Le `pcmBuffer`, il contiendra les données _PCM_ converties d’un demi _DMA_ 
-3. le `pcmData`, il contiendra toutes les données _PCM_ converties. 
+3. Le `pcmData`, il contiendra toutes les données _PCM_ converties. 
    
 ```c
 #define NB_FRAME_IN_PDM_BUFFERSIZE 20
@@ -97,11 +97,11 @@ Par exemple si on utilise c’est fonctions d’interruptions avec deux flags, `
 ```c
 void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai){
 	cplt = 1;
- 	half = 1;
+	half = 1;
 }
 
 void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
-  	cplt = 0;
+	cplt = 0;
 	half = 1;
 }
 
@@ -119,8 +119,7 @@ while (recording){
 }
 ```
 
-Chaque interruption on exécute la fonction de conversion `pcm2pdm` avec en premier argument les données _PDM_ (données dans le DMA) à convertir et en deuxième argument un tableau vide qui va nous permettre
-de récupérer les données _PCM_ convertis. \
+Chaque interruption on exécute la fonction de conversion `pcm2pdm` avec en premier argument les données _PDM_ (données dans le DMA) à convertir et en deuxième argument un tableau contenant les données _PCM_ convertis. \
 C’est dans le premier argument, où l’on donne le tableau des valeurs _pdm_ qu’il faut spécifier sur qu’elle moitié du _DMA_ on va travaillé. 
 1. Si c’est la première moitié, il suffit de lui donner le tableau `pdmBuffer` en entier. C’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 0 et dans notre fonction on ira jusqu’à l’élément 49. 
 2. Si c’est la seconde moitié, alors on donne le tableau `pdmBuffer+PDM_BUFFERSIZE/2`, c’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 50 et dans notre fonction on ira jusqu’à l’élément 99. 
@@ -131,7 +130,8 @@ C’est dans le premier argument, où l’on donne le tableau des valeurs _pdm_ 
 Il est important de noter que dans la partie [acquisition](../acquisition/acquisition.md), nous avons configuré le _SAI_ avec une longueur de frame de 64 bits et un type de données sur 8 bits. Nos valeurs dans le _DMA_ sont donc sur 8 bits. Nous on souhaite faire la somme du nombre de bit à 1 dans une frame (64-bits), pour cela on va créer un pointeur sur 64 bits vers notre tableau de 8 bits qui contient les données _PDM_: `uint64_t* pdmFrameBuffer = pdmBuffer;` 
 Maintenant que l’on a un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourir tous les frames de notre acquisition à l’ai d’une boucle `for`. \
 
-Pour compter les bits à 1 on utilise une fonction intégrée au compilateur: `__builtin_popcount`, cela nous permet donc d’obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillons _PDM_ se retrouve réduit à 1 échantillon _PCM_.
+Pour compter les bits à 1 on utilise une fonction intégrée au compilateur: `__builtin_popcount`, cela nous permet donc d’obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillons _PDM_ se retrouve réduit à 1 échantillon _PCM_. \
+Il ne faut pas oublier que c'est échantillons sont ajoutés au tableau contenant la totalité des échantillons _PCM_.
 
 ```c
 void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmData){
@@ -146,9 +146,7 @@ void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmData){
 
 ### Arrêt de l’enregistrement
 
-Les données d’un demi _DMA_ sont maintenant convertissables à l’aide de notre fonction, mais il reste un problème. Il faut stocker c’est valeurs PCM. \
-Pour cela on à un tableau `pcmData` qui à une longueur de 48 000 échantillons, soit 1 seconde d’enregistrement avec une fréquence d’échantillonnage de 48 kHz. À chaque fois que l’on obtient de nouvelles données _PCM_ à la suite d’une conversion, il faut ajouter les données de `pcmBufer` dans `pcmData`. \
-Si `pcmData` est plein, dans ce cas il faut arrêter l’enregistrement.
+Les données d’un demi _DMA_ sont maintenant convertissables à l’aide de notre fonction, mais il reste un problème. On à un tableau `pcmData` qui à une longueur de 48 000 échantillons, soit 1 seconde d’enregistrement avec une fréquence d’échantillonnage de 48 kHz. Si `pcmData` est plein, dans ce cas il faut pouvoir arrêter l’enregistrement.
 
 Ce qui nous permet d’avoir le code suivant :
 

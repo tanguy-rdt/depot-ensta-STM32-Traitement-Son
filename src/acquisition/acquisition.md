@@ -10,8 +10,6 @@
 
 Le PDM (_Pulse-Density modulation_) soit une modulation par densité d’impulsions est utilisé pour représenter un signal analogique en signal binaire. Le principe est le suivant, on a un signal audio sous sa forme analogique que l’on va chercher à enregistrer. Pour cela, on va coder chaque échantillon du signal sur un seul bit. Chaque échantillon est quantifié à une valeur. Si l’échantillon (postion n) à une valeur inférieure à l’échantillon précédent (position n-1) alors son bit sera codé à 0, sinon si sa valeur est supérieure alors son bit sera codé à 1. C’est donc une comparaison à chaque instant d’échantillonnage avec le précédent qui permettra de moduler notre signal audio. Cette méthode à un nom, la modulation delta. 
 
-Pour mieux visualiser, voici un schéma explicatif :
-
 ![](./img/PDM_signal.png)
 
 
