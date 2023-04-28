@@ -552,9 +552,9 @@ x_filtered_2 = filter(fir_filter, 1, x_filtered);
 <p>On remarque facilement les effets du filtre, nous avons supprimé les hautes fréquences provenant du signal PDM tout en préservant l'allure du signal audio. Si on écoute les trois audios, une nette amélioration est à noter. </p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="exemple"><a class="header" href="#exemple">Exemple</a></h1>
 <blockquote>
-<p>Si certaine capture d'écran ne corresponde pas avec le MCU du <em>STM32F4290I-DISC1</em>, c'est parce que certain de c'est examples ont était réaliser sur une nucleo-64. Le principe de fonctionement et de configuration reste le même, seul les pins sont différentes.</p>
+<p>Si certaine capture d'écran ne correspond pas avec le MCU du <em>STM32F4290I-DISC1</em>, c'est parce que certain de c'est exemples ont été réaliser sur une nucleo-64. Le principe de fonctionnement et de configuration reste le même, seuls les pins sont différents.</p>
 </blockquote>
-<p>Pour débuter ce projet nous avons, pu découvrir la carte STM32 et s'est différentes possibilitées à l'aide d'exemples:</p>
+<p>Pour débuter ce projet, nous avons, pu découvrir la carte STM32 et s'est différentes possibilités à l'aide d'exemples:</p>
 <ul>
 <li><a href="exemple/./toggle_led/toggle_led.html">Toggle Led</a></li>
 <li><a href="exemple/./pushbutton_led/pushbutton_led.html">Pushbutton Led</a></li>
@@ -565,7 +565,7 @@ x_filtered_2 = filter(fir_filter, 1, x_filtered);
 <div style="break-before: page; page-break-before: always;"></div><h1 id="clignotement-dune-led"><a class="header" href="#clignotement-dune-led">Clignotement d'une led</a></h1>
 <h3 id="préparation-du-projet"><a class="header" href="#préparation-du-projet">Préparation du projet</a></h3>
 <p><img src="exemple/toggle_led/./img/clear_pinout.png" alt="" /></p>
-<h3 id="configuration-de-la-pin-connecté-à-la-led"><a class="header" href="#configuration-de-la-pin-connecté-à-la-led">Configuration de la pin connecté à la LED</a></h3>
+<h3 id="configuration-de-la-pin-connectée-à-la-led"><a class="header" href="#configuration-de-la-pin-connectée-à-la-led">Configuration de la pin connectée à la LED</a></h3>
 <p><img src="exemple/toggle_led/./img/pin5.png" alt="" /></p>
 <h3 id="modification-du-code"><a class="header" href="#modification-du-code">Modification du code</a></h3>
 <pre><code class="language-c">/* USER CODE BEGIN WHILE */
@@ -577,11 +577,11 @@ while (1)
     /* USER CODE END WHILE */
 }
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="clignotement-dune-led-avec-un-boutton"><a class="header" href="#clignotement-dune-led-avec-un-boutton">Clignotement d'une led avec un boutton</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="clignotement-dune-led-avec-un-bouton"><a class="header" href="#clignotement-dune-led-avec-un-bouton">Clignotement d'une LED avec un bouton</a></h1>
 <blockquote>
-<p><em>On considére que la configuration de la led à déjà était faite avec l'exemple 'toggle_led'</em></p>
+<p><em>On considère que la configuration de la LED à déjà était faite avec l'exemple 'toggle_led'</em></p>
 </blockquote>
-<h3 id="configuration-de-la-pin-connecté-au-bp"><a class="header" href="#configuration-de-la-pin-connecté-au-bp">Configuration de la pin connecté au BP</a></h3>
+<h3 id="configuration-de-la-pin-connectée-au-bp"><a class="header" href="#configuration-de-la-pin-connectée-au-bp">Configuration de la pin connectée au BP</a></h3>
 <p><img src="exemple/pushbutton_led/./img/PC13.png" alt="" /></p>
 <h3 id="modification-du-code-1"><a class="header" href="#modification-du-code-1">Modification du code</a></h3>
 <pre><code class="language-c">/* USER CODE BEGIN WHILE */
@@ -598,9 +598,9 @@ while (1)
     /* USER CODE END WHILE */
 }
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="uart---affichage-dun-message-à-lappuie-du-bouton"><a class="header" href="#uart---affichage-dun-message-à-lappuie-du-bouton">UART - Affichage d'un message à l'appuie du bouton</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="uart---affichage-dun-message-à-lappui-du-bouton"><a class="header" href="#uart---affichage-dun-message-à-lappui-du-bouton">UART - Affichage d'un message à l'appui du bouton</a></h1>
 <blockquote>
-<p><em>On considére que la configuration de la led et du BP à déjà était faite avec l'exemple 'pushbutton_led'</em></p>
+<p><em>On considère que la configuration de la LED et du BP à déjà était faite avec l'exemple 'pushbutton_led'</em></p>
 </blockquote>
 <h3 id="configuration-de-luart"><a class="header" href="#configuration-de-luart">Configuration de l'UART</a></h3>
 <p><img src="exemple/pushbutton_uart/./img/uart_conf.png" alt="" /></p>
