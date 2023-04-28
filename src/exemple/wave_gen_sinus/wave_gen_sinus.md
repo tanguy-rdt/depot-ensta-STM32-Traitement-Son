@@ -13,7 +13,7 @@ On configure en plus le DMA qui sera associé au DAC
 
 ![](./img/timer.png)
 
-Pour choisir les paramétres du timers pour une fréquence voulu on peut appliquer les formules suivantes :
+Pour choisir les paramètres du timers pour une fréquence voulue on peut appliquer les formules suivantes :
 
 $$ TriggerFrequency = OutputWaveFrequency * Ns$$ 
 
@@ -23,23 +23,23 @@ $$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency}$$
 
 #### Exemple: _Pour un sinus avec une lookup table de 128 samples_
 
-__Si l'on souhaite une freq de 1Khz:__
+__Si l'on souhaite une fréquence de 1Khz:__
    
 $$ TriggerFrequency = OutputWaveFrequency * Ns = 1.10^3 * 128 = 128.10^3$$ 
 
 $$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{128.10^3} = 625$$
 
-On peut donc choisir un prescaler de 0 est un période de 625.
+On peut donc choisir un prescaler de 0 est une période de 625.
 
 ![](./img/1k.jpg)
 
-__Si l'on souhaite une freq de 500Hz:__
+__Si l'on souhaite une fréquence de 500Hz:__
    
 $$ TriggerFrequency = OutputWaveFrequency * Ns = 500 * 128 = 64.10^3$$ 
 
 $$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{64.10^3} = 1250$$
 
-On peut donc choisir un prescaler de 0 est un période de 1250. On sait que 1kHz c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter un prescaler de 2.
+On peut donc choisir un prescaler de 0 est une période de 1250. On sait que 1kHz, c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter par le suite un prescaler de 2.
 
 ![](./img/500.jpg)
 

@@ -8,7 +8,7 @@
 
 ## Le PDM 
 
-Le PDM (_Pulse-Density modulation_) soit une modulation par densité d’impulsions est utilisé pour représenter un signal analogique en signal binaire. Le principe est le suivant, on a un signal audio sous sa forme analogique que l’on va chercher à enregistrer. Pour cela, on va coder chaque échantillon du signal sur un seul bit. Chaque échantillon est quantifié à une valeur. Si l’échantillon (postion n) à une valeur inférieure à l’échantillon précédent (position n-1) alors son bit sera codé à 0, sinon si sa valeur est supérieure alors son bit sera codé à 1. C’est donc une comparaison à chaque instant d’échantillonnage avec le précédent qui permettra de moduler notre signal audio. Cette méthode à un nom, la modulation delta. 
+Le PDM (_Pulse-Density modulation_) soit modulation par densité d’impulsions est utilisée pour représenter un signal analogique en signal binaire. Le principe est le suivant, on a un signal audio sous sa forme analogique que l’on va chercher à enregistrer. Pour cela, on va coder chaque échantillon du signal sur un seul bit. Chaque échantillon est quantifié à une valeur. Si l’échantillon (postion n) à une valeur inférieure à l’échantillon précédent (position n-1) alors son bit sera codé à 0, sinon si sa valeur est supérieure alors son bit sera codé à 1. C’est donc une comparaison à chaque instant d’échantillonnage avec le précédent qui permettra de moduler notre signal audio. Cette méthode à un nom, la modulation delta. 
 
 ![](./img/PDM_signal.png)
 
@@ -25,7 +25,7 @@ La broche nommée _LR_ sur le schéma ci-dessus est une broche de sélection de 
 
 ![](./img/Front_Echantillonage.png)
  
-Les échantillons audio en entrée sont acquis par broche de sortie de données (DOUT) du microphone numérique via la broche de données série (SD), sur le schéma ci-dessous on voit que c’est la sortie PE6. 
+Les échantillons audio en entrée sont acquis par la broche de sortie de données (DOUT) du microphone numérique via la broche de données série (SD), sur le schéma ci-dessous on voit que c’est la sortie PE6. 
 
 
 <p align="center">
@@ -34,7 +34,7 @@ Les échantillons audio en entrée sont acquis par broche de sortie de données 
 
 ## DMA
 
-Le DMA (_Direct Memory Access_) soit un accès direct à la mémoire permet de stocker directement des données venant d’un périphérique en mémoire principale de la machine. C’est-à-dire que le microprocesseur n’intervient pas lors du transfert. La conclusion du transfert de données peut être signalée par interruption, cela sera utile dans le cas de notre projet. Le DMA est surtout utile quand on travaille avec de grandes quantités de données, le processeur peut rapidement être ralenti si tous les octets doivent passer par l’unité centrale. L’utilisation du DMA permettra donc de transférer des données sans qu’aucun code ne soit exécuté.
+Le DMA (_Direct Memory Access_) soit accès direct à la mémoire permet de stocker directement des données venant d’un périphérique en mémoire principale de la machine. C’est-à-dire que le microprocesseur n’intervient pas lors du transfert. La conclusion du transfert de données peut être signalée par interruption, cela sera utile dans le cas de notre projet. Le DMA est surtout utile quand on travaille avec de grandes quantités de données, le processeur peut rapidement être ralenti si tous les octets doivent passer par l’unité centrale. L’utilisation du DMA permettra donc de transférer des données sans qu’aucun code ne soit exécuté.
 
 
 Voici un schéma explicatif pour mieux comprendre le principe du DMA : 
@@ -76,7 +76,7 @@ flowchart TB
 ```
 
 
- Pendant que les données sont transférées avec le DMA, l’unité centrale peut travailler sur d’autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.  
+ Pendant que les données sont transférées avec le DMA, l’unité centrale peut travailler sur d’autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de données renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.  
 
 
 ## Mise en pratique 

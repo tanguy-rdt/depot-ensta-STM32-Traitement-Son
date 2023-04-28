@@ -1,6 +1,6 @@
 # UART - Affichage d'un message à l'appui du bouton
 
-> *On considère que la configuration de la LED et du BP à déjà était faite avec l'exemple 'pushbutton_led'*
+> *On considère que la configuration de la LED et du BP a déjà été faite avec l'exemple 'pushbutton_led'*
 
 
 ### Configuration de l'UART

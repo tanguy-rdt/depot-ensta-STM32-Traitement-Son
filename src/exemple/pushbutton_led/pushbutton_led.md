@@ -1,6 +1,6 @@
 # Clignotement d'une LED avec un bouton
 
-> *On considère que la configuration de la LED à déjà était faite avec l'exemple 'toggle_led'*
+> *On considère que la configuration de la LED a déjà été faite avec l'exemple 'toggle_led'*
 
 
 ### Configuration de la pin connectée au BP
