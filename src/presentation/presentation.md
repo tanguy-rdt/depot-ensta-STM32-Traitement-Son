@@ -52,13 +52,8 @@ Pour mener à bien ce projet, nous avons utilisé :
 - une sortie Jack
 - un casque
 
-<div style='display:flex'>
-
-<div><img src=''></div>
-
-<div><img src=''></div>
-
-</div>
+![](./img/stm32.png)
+![](./img/micro.png)
 
 
 ## Utilisation
