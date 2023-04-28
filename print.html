@@ -155,10 +155,10 @@
 </blockquote>
 <h1 id="présentation"><a class="header" href="#présentation">Présentation</a></h1>
 <h2 id="explication-du-projet"><a class="header" href="#explication-du-projet">Explication du projet</a></h2>
-<p>Au cours des 30 créneaux dédiés au projet il nous a été demandé de réussir à enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.</p>
+<p>Au cours des 30 créneaux dédiés au projet il nous a été demandé d'enregistrer un son de quelques secondes sur la carte STM32 fournie via un micro MEMS et le rejouer sur des hauts-parleurs via le DAC.</p>
 <p>Pour nous organiser et avancer progressivement vers le résultat final, nous avons commencé par apprendre les bases, que ce soit sur la configuration de la carte STM32, l'utilisation de composants et périphériques comme le DMA, le DAC etc, ou encore l'utilisation de Git.</p>
 <p>Nous avons illustré notre apprentissage dans la rubrique <a href="presentation/../exemple/exemple.html">Exemples</a>, comme allumer une LED, afficher un message dans le moniteur série avec l'UART, générer un signal en sortie avec le DAC...</p>
-<p>Après avoir atteint une certaine maitrises de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :</p>
+<p>Après avoir atteint une certaine maitrise de ces différents aspects nous avons mis bout à bout nos connaissances en produisant la chaine complète du projet ci-dessous :</p>
 <p><img src="presentation/./img/sch%C3%A9ma_gen.png" alt="" /></p>
 <pre class="mermaid">flowchart LR
     subgraph STM32
@@ -211,7 +211,7 @@ Connecter la carte à votre pc via le périphérique ST-Link, ce qui devrait vou
 </li>
 </ol>
 <h4 id="enregistrement-et-diffusion"><a class="header" href="#enregistrement-et-diffusion">Enregistrement et diffusion</a></h4>
-<p>Une fois que la carte est flashée, l’enregistrement démarre automatiquement. Si vous n’avez pas eu le temps d’enregistrer votre, vous pouvez appuyer sur le bouton reset pour relancer le programme. Quand vous êtes satisfait de l’enregistrement, il ne reste plus qu’à appuyer sur le <em>user button</em> pour lancer l’audio. </p>
+<p>Une fois que la carte est flashée, l’enregistrement démarre automatiquement. Si vous n’avez pas eu le temps d’enregistrer votre son, vous pouvez appuyer sur le bouton reset pour relancer le programme. Quand vous êtes satisfait de l’enregistrement, il ne reste plus qu’à appuyer sur le <em>user button</em> pour lancer l’audio. </p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="acquisition"><a class="header" href="#acquisition">Acquisition</a></h1>
 <ul>
 <li><a href="acquisition/acquisition.html#acquisition">Acquisition</a>
@@ -224,7 +224,7 @@ Connecter la carte à votre pc via le périphérique ST-Link, ce qui devrait vou
 </li>
 </ul>
 <h2 id="le-pdm"><a class="header" href="#le-pdm">Le PDM</a></h2>
-<p>Le PDM (<em>Pulse-Density modulation</em>) soit une modulation par densité d’impulsions est utilisé pour représenter un signal analogique en signal binaire. Le principe est le suivant, on a un signal audio sous sa forme analogique que l’on va chercher à enregistrer. Pour cela, on va coder chaque échantillon du signal sur un seul bit. Chaque échantillon est quantifié à une valeur. Si l’échantillon (postion n) à une valeur inférieure à l’échantillon précédent (position n-1) alors son bit sera codé à 0, sinon si sa valeur est supérieure alors son bit sera codé à 1. C’est donc une comparaison à chaque instant d’échantillonnage avec le précédent qui permettra de moduler notre signal audio. Cette méthode à un nom, la modulation delta. </p>
+<p>Le PDM (<em>Pulse-Density modulation</em>) soit modulation par densité d’impulsions est utilisée pour représenter un signal analogique en signal binaire. Le principe est le suivant, on a un signal audio sous sa forme analogique que l’on va chercher à enregistrer. Pour cela, on va coder chaque échantillon du signal sur un seul bit. Chaque échantillon est quantifié à une valeur. Si l’échantillon (postion n) à une valeur inférieure à l’échantillon précédent (position n-1) alors son bit sera codé à 0, sinon si sa valeur est supérieure alors son bit sera codé à 1. C’est donc une comparaison à chaque instant d’échantillonnage avec le précédent qui permettra de moduler notre signal audio. Cette méthode à un nom, la modulation delta. </p>
 <p><img src="acquisition/./img/PDM_signal.png" alt="" /></p>
 <h2 id="sai"><a class="header" href="#sai">SAI</a></h2>
 <p>Le SAI (<em>Serial Audio Interface</em>) est une interface permettant au microcontrôleur de communiquer avec plusieurs dispositifs audio externes, dont les microphones. Sur le STM32, le SAI a une interface PDM dédiée, ce qui permet directement d’acquérir un signal audio en entrée. Pour notre projet, c’est donc cette interface qui nous intéresse. Si on veut acquérir un signal audio, il faut donc que notre microphone soit connecté au SAI en configuration mono et mode de réception maître. </p>
@@ -232,12 +232,12 @@ Connecter la carte à votre pc via le périphérique ST-Link, ce qui devrait vou
 <p><img src="acquisition/./img/Schema_SAI.png" alt="" /></p>
 <p>La broche nommée <em>LR</em> sur le schéma ci-dessus est une broche de sélection de canaux du microphone qui peut être connectée soit à Vdd, soit à GND. En fonction du canal sélectionné, on choisit si le microphone émet les données sur les fronts montants ou descendant de l’horloge. Le front d’échantillonnage de l’horloge SAI doit être configuré en conséquence. Selon la documentation (voir ci-dessous), on a le choix entre 16 kHz ou 48 kHz pour <em>Fe</em>, nous avons fait le choix de 48 kHz puisque cela nous induit une meilleure qualité audio. Le front d’échantillonnage de l’horloge SAI sera donc de 3,072 MHz. </p>
 <p><img src="acquisition/./img/Front_Echantillonage.png" alt="" /></p>
-<p>Les échantillons audio en entrée sont acquis par broche de sortie de données (DOUT) du microphone numérique via la broche de données série (SD), sur le schéma ci-dessous on voit que c’est la sortie PE6. </p>
+<p>Les échantillons audio en entrée sont acquis par la broche de sortie de données (DOUT) du microphone numérique via la broche de données série (SD), sur le schéma ci-dessous on voit que c’est la sortie PE6. </p>
 <p align="center">
   <img src="acquisition/./img/Broche_SD.png" alt="Broche_SD" width="40%" height="40%" align="center">
 </p>
 <h2 id="dma"><a class="header" href="#dma">DMA</a></h2>
-<p>Le DMA (<em>Direct Memory Access</em>) soit un accès direct à la mémoire permet de stocker directement des données venant d’un périphérique en mémoire principale de la machine. C’est-à-dire que le microprocesseur n’intervient pas lors du transfert. La conclusion du transfert de données peut être signalée par interruption, cela sera utile dans le cas de notre projet. Le DMA est surtout utile quand on travaille avec de grandes quantités de données, le processeur peut rapidement être ralenti si tous les octets doivent passer par l’unité centrale. L’utilisation du DMA permettra donc de transférer des données sans qu’aucun code ne soit exécuté.</p>
+<p>Le DMA (<em>Direct Memory Access</em>) soit accès direct à la mémoire permet de stocker directement des données venant d’un périphérique en mémoire principale de la machine. C’est-à-dire que le microprocesseur n’intervient pas lors du transfert. La conclusion du transfert de données peut être signalée par interruption, cela sera utile dans le cas de notre projet. Le DMA est surtout utile quand on travaille avec de grandes quantités de données, le processeur peut rapidement être ralenti si tous les octets doivent passer par l’unité centrale. L’utilisation du DMA permettra donc de transférer des données sans qu’aucun code ne soit exécuté.</p>
 <p>Voici un schéma explicatif pour mieux comprendre le principe du DMA : </p>
 <p>Schéma simplifié d’un transfert de mémoire dans un microprocesseur</p>
 <pre class="mermaid">flowchart LR
@@ -269,7 +269,7 @@ Connecter la carte à votre pc via le périphérique ST-Link, ce qui devrait vou
     DMA2&lt;--&gt;RAM
     CPU&lt;--&gt;RAM
 </pre>
-<p>Pendant que les données sont transférées avec le DMA, l’unité centrale peut travailler sur d’autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de donnée renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.</p>
+<p>Pendant que les données sont transférées avec le DMA, l’unité centrale peut travailler sur d’autres choses. En effet, étant donné que le signal audio est lourd, il est essentiel de traiter les données en même temps que de les passer en mémoire. On va donc procéder de la manière suivante, le tableau de données renseigné à partir du SAI va être scindé en deux parties, la partie MSB et LSB. On verra dans la prochaine section comment traiter ces deux parties.</p>
 <h2 id="mise-en-pratique"><a class="header" href="#mise-en-pratique">Mise en pratique</a></h2>
 <p>Dans cette partie on va voir dans un premier temps la configuration de l’horloge et du SAI en mode DMA et dans un second temps le code implémenté pour la réception via le SAI en mode DMA. </p>
 <p>Configuration horloge du SAI </p>
@@ -291,10 +291,10 @@ HAL_TIM_Base_Start(&amp;htim2);
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="conversion-des-données-pdm--pcm"><a class="header" href="#conversion-des-données-pdm--pcm">Conversion des données <em>PDM</em> → <em>PCM</em></a></h1>
 <h2 id="le-pcm"><a class="header" href="#le-pcm">Le PCM</a></h2>
-<p>Le <em>PCM</em> (<em>Pulse Code With Modulation</em>), est un signal numérique produit à la suite d’une chaîne d’opération : Échantillonnage, quantification et codage. <br />
-Comme on peut le constater sur la figure suivante le signal est échantillonné à une fréquence <em>fe</em> et chaque échantillon représente une impulsion à une certaine amplitude.</p>
+<p>Le <em>PCM</em> (<em>Pulse Code With Modulation</em>) est un signal numérique produit à la suite d’une chaîne d’opération : échantillonnage, quantification et codage. <br />
+Comme on peut le constater sur la figure suivante le signal est échantillonné à une fréquence <em>fe</em> et chaque échantillon représente une impulsion avec une certaine amplitude.</p>
 <p><img src="conversion/./img/pcm.png" alt="" /></p>
-<p>Si l’on compare l’allure d’un signal <em>PDM</em> à celle d’un signal <em>PCM</em>, on remarque 2 différences principales :</p>
+<p>Si l’on compare l’allure d’un signal <em>PDM</em> à celle d’un signal <em>PCM</em>, on remarque deux différences principales :</p>
 <ol>
 <li>La fréquence d’échantillonnage du signal <em>PDM</em> est plus importante que celle du signal <em>PCM</em></li>
 <li>Le signal <em>PDM</em> possède des amplitudes binaires (0-1) alors que l’amplitude du <em>PCM</em> est numérique.</li>
@@ -302,29 +302,27 @@ Comme on peut le constater sur la figure suivante le signal est échantillonné 
 <p><img src="conversion/./img/pdm_pcm.png" alt="" /></p>
 <h1 id="conversion"><a class="header" href="#conversion">Conversion</a></h1>
 <h2 id="conversion-selon-stm"><a class="header" href="#conversion-selon-stm">Conversion selon STM</a></h2>
-<p>Il existe plusieurs solutions, pour réaliser une conversion <em>PDM</em> vers <em>PCM</em>. Selon la documentation de <em>STM32</em> il est conseillé de suivre la procédure suivante :</p>
+<p>Il existe plusieurs solutions, pour réaliser une conversion <em>PDM</em> vers <em>PCM</em>. Selon la documentation du <em>STM32</em>, il est conseillé de suivre la procédure suivante :</p>
 <p><img src="conversion/./img/conversion.png" alt="" /></p>
-<p>Il faut dans un premier temps utiliser un filtre passe-bas pour convertir les données <em>PDM</em> en <em>PCM</em>. La conversion se fait grâce à un filtre <em>FIR</em>, l’objectif est de multiplier les 
-échantillons <em>PDM</em> par les coefficients du filtre et de faire une somme pondérée. Au final on se retrouve avec des données numériques, c’est-à-dire un signal <em>PCM</em></p>
+<p>Il faut dans un premier temps utiliser un filtre passe-bas pour convertir les données <em>PDM</em> en <em>PCM</em>. La conversion se fait grâce à un filtre <em>FIR</em>, l’objectif étant de multiplier les échantillons <em>PDM</em> par les coefficients du filtre et de faire une somme pondérée. Finalement, on se retrouve avec des données numériques, c’est-à-dire un signal <em>PCM</em>.</p>
 <p><img src="conversion/./img/fir.png" alt="" /></p>
-<p>Ce filtre permet également de réduire la fréquence d’échantillonnage, mais potentiellement de manière insuffisente. Pour obtenir la fréquence d’échantillonnage adapté du <em>PCM</em> il faut procéder à une décimation, avec un facteur de décimation approprié.</p>
+<p>Ce filtre permet également de réduire la fréquence d’échantillonnage, mais potentiellement de manière insuffisante. Pour obtenir la fréquence d’échantillonnage adaptée du <em>PCM</em>, il faut procéder à une décimation, avec un facteur de décimation approprié.</p>
 <p><img src="conversion/./img/d%C3%A9cimation.png" alt="" /></p>
 <h2 id="notre-conversion"><a class="header" href="#notre-conversion">Notre conversion</a></h2>
-<p>Dans le cas du projet, nous avons simplifié la conversion. Nous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu’en plus de décimer notre signal, on va convertir nos bits en données numériques, c’est-à-dire en <em>PCM</em>.</p>
+<p>Dans le cadre du projet, nous avons simplifié la conversion. Nous allons simplement réaliser une décimation. Une décimation tout de même un peu particulière puisqu’en plus de décimer notre signal, on va convertir nos bits en données numériques, c’est-à-dire en <em>PCM</em>.</p>
 <p><img src="conversion/./img/conversion2.png" alt="" /></p>
 <p>Comme expliqué précédemment, le <em>PDM</em> est configuré à une fréquence d’échantillonnage de <em>3,072 MHz</em>, ce qui est beaucoup plus important que la fréquence cible du <em>PCM</em> qui est de <em>48 kHz</em>. L’objectif est donc de réduire la fréquence du signal <em>PDM</em>. <br />
 La décimation permet de réduire la fréquence d’échantillonnage d’un signal en prenant seulement un échantillon tous les n-échantillons : </p>
 <p><img src="conversion/./img/d%C3%A9cimation.png" alt="" /></p>
-<p>C’est donc idéal pour notre cas d’utilisation. <br />
-Pour déterminer le facteur de décimation on peut appliquer la formule de la figure précédente. Après calcul on trouve un facteur de décimation de 64. Si on prend donc 1 échantillon <em>PDM</em> tout les 64 échantillons, on obtiendra un signal avec une fréquence de <em>48 kHz</em>. <br />
-Seulement, prendre 1 échantillon tous les n-échantillons, permet uniquement de réduire la fréquence d’échantillonnage du signal, pas de convertir en <em>PDM</em> → <em>PCM</em>. On va donc compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d’obtenir une valeur entre 0 et 64. 
+<p>Pour déterminer le facteur de décimation, on peut appliquer la formule de la figure précédente. Après calcul, on trouve un facteur de décimation de 64. Si on prend un échantillon <em>PDM</em> tous les soixante-quatre échantillons, on obtiendra un signal avec une fréquence de <em>48 kHz</em>. <br />
+Seulement, cette méthode permet uniquement de réduire la fréquence d’échantillonnage du signal, pas de convertir en <em>PDM</em> → <em>PCM</em>. On va compter tous les bits à 1 dans une trame de 64 bits, ce qui nous permettra d’obtenir une valeur entre 0 et 64. 
 Au final on obtiendra un signal <em>PCM</em> avec un certain nombre d’impulsions, des amplitudes situées entre 0 et 64 avec une fréquence d’échantillonnage de <em>48 kHz</em>.</p>
 <p><img src="conversion/./img/decimation2.png" alt="" /></p>
 <h2 id="mise-en-pratique-1"><a class="header" href="#mise-en-pratique-1">Mise en pratique</a></h2>
 <h3 id="variables"><a class="header" href="#variables">Variables</a></h3>
 <p>Nous avons besoin d’un certain nombre de variables. </p>
 <ol>
-<li>Le <code>pdmBuffer</code> présentê à la partie précédente qui contient les valeurs <em>PDM</em> du <em>DMA</em></li>
+<li>Le <code>pdmBuffer</code> présenté à la partie précédente qui contient les valeurs <em>PDM</em> du <em>DMA</em></li>
 <li>Le <code>pcmBuffer</code>, il contiendra les données <em>PCM</em> converties d’un demi <em>DMA</em> </li>
 <li>Le <code>pcmData</code>, il contiendra toutes les données <em>PCM</em> converties. </li>
 </ol>
@@ -342,7 +340,7 @@ uint32_t pcmData[PCM_NB_SAMPLE];
 </code></pre>
 <h3 id="lecture-du-dma"><a class="header" href="#lecture-du-dma">Lecture du DMA</a></h3>
 <p>Comme expliqué dans la partie de <a href="conversion/../acquisition/acquisition.html">l’acquisition</a>, nous travaillons en demi <em>DMA</em> pour des soucis de stockage et de conversion en temps réel. Quand un demi <em>DMA</em> est plein, les données <em>PDM</em> sont disponibles pour être converties en <em>PCM</em>. <br />
-Il faut donc savoir qu’elle partit du <em>DMA</em> est plein pour procédé à la conversion. </p>
+Il faut donc savoir quelle partie du <em>DMA</em> est plein pour procéder à la conversion. </p>
 <p>STM nous donne accès à deux fonctions d’interruptions que l’on peut modifier pour mettre des flags à 1.</p>
 <ol>
 <li>Une interruption pour déterminer si la moitié du <em>DMA</em> est plein : <br />
@@ -350,7 +348,7 @@ Il faut donc savoir qu’elle partit du <em>DMA</em> est plein pour procédé à
 <li>Une interruption pour déterminer si le <em>DMA</em> est plein : <br />
 <code>void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)</code></li>
 </ol>
-<p>Par exemple si on utilise c’est fonctions d’interruptions avec deux flags, <code>cplt</code> et <code>half</code>. Si <code>half</code> vaut 1 alors la première moitié du <em>DMA</em> est prête, si c’est <code>cplt</code> dans ce cas c’est la seconde. </p>
+<p>Par exemple, si on utilise c’est fonctions d’interruptions avec deux flags, <code>cplt</code> et <code>half</code>. Si <code>half</code> vaut 1, alors la première moitié du <em>DMA</em> est prête, si c’est <code>cplt</code> dans ce cas c’est la seconde. </p>
 <pre><code class="language-c">void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai){
 	cplt = 1;
 	half = 1;
@@ -362,7 +360,7 @@ void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
 }
 
 </code></pre>
-<p>Maintenant qu’on à des flags il ne reste plus qu’à les utiliser pour réaliser le traitement. Si <code>half</code> vaut 1 alors on commence le traitement, si <code>cplt</code> vaut 0 alors on prend la première moitié sinon la seconde.</p>
+<p>Maintenant que l'on a des flags, il ne reste plus qu’à les utiliser pour réaliser le traitement. Si <code>half</code> vaut 1, alors on commence le traitement, si <code>cplt</code> vaut 0, alors on prend la première moitié, sinon, la seconde.</p>
 <pre><code class="language-c">while (recording){
 	if(half){
 		half = 0;
@@ -370,17 +368,17 @@ void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai){
 	}
 }
 </code></pre>
-<p>Chaque interruption on exécute la fonction de conversion <code>pcm2pdm</code> avec en premier argument les données <em>PDM</em> (données dans le DMA) à convertir et en deuxième argument un tableau contenant les données <em>PCM</em> convertis. <br />
-C’est dans le premier argument, où l’on donne le tableau des valeurs <em>pdm</em> qu’il faut spécifier sur qu’elle moitié du <em>DMA</em> on va travaillé. </p>
+<p>A chaque interruption, on exécute la fonction de conversion <code>pcm2pdm</code> avec en premier argument les données <em>PDM</em> (données dans le DMA) à convertir et en deuxième argument un tableau contenant les données <em>PCM</em> convertis. <br />
+C’est dans le premier argument, où l’on donne le tableau des valeurs <em>pdm</em> qu’il faut spécifier sur quelle moitié du <em>DMA</em> on va travailler. </p>
 <ol>
-<li>Si c’est la première moitié, il suffit de lui donner le tableau <code>pdmBuffer</code> en entier. C’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 0 et dans notre fonction on ira jusqu’à l’élément 49. </li>
-<li>Si c’est la seconde moitié, alors on donne le tableau <code>pdmBuffer+PDM_BUFFERSIZE/2</code>, c’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 50 et dans notre fonction on ira jusqu’à l’élément 99. </li>
+<li>Si c’est la première moitié, il suffit de lui donner le tableau <code>pdmBuffer</code> en entier. C’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 0 et dans notre fonction on ira donc jusqu’à l’élément 49. </li>
+<li>Si c’est la seconde moitié, alors on donne le tableau <code>pdmBuffer+PDM_BUFFERSIZE/2</code>, c’est-à-dire que si notre tableau est de longueur 100, alors on commence à l’élément 50 et dans notre fonction on ira donc jusqu’à l’élément 99. </li>
 </ol>
 <h3 id="conversion-des-données"><a class="header" href="#conversion-des-données">Conversion des données</a></h3>
 <p>Il est important de noter que dans la partie <a href="conversion/../acquisition/acquisition.html">acquisition</a>, nous avons configuré le <em>SAI</em> avec une longueur de frame de 64 bits et un type de données sur 8 bits. Nos valeurs dans le <em>DMA</em> sont donc sur 8 bits. Nous on souhaite faire la somme du nombre de bit à 1 dans une frame (64-bits), pour cela on va créer un pointeur sur 64 bits vers notre tableau de 8 bits qui contient les données <em>PDM</em>: <code>uint64_t* pdmFrameBuffer = pdmBuffer;</code> 
-Maintenant que l’on a un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourir tous les frames de notre acquisition à l’ai d’une boucle <code>for</code>. </p>
+Maintenant que l’on a un pointeur de 64-bits sur notre tableau de 8-bits, on peut parcourir toutes les frames de notre acquisition à l’aide d’une boucle <code>for</code>. </p>
 <p>Pour compter les bits à 1 on utilise une fonction intégrée au compilateur: <code>__builtin_popcount</code>, cela nous permet donc d’obtenir une valeur entre 0 et 64. Chaque frame de 8 échantillons <em>PDM</em> se retrouve réduit à 1 échantillon <em>PCM</em>. <br />
-Il ne faut pas oublier que c'est échantillons sont ajoutés au tableau contenant la totalité des échantillons <em>PCM</em>.</p>
+Il ne faut pas oublier que ces échantillons sont ajoutés au tableau contenant la totalité des échantillons <em>PCM</em>.</p>
 <pre><code class="language-c">void pdm2pcm(uint8_t* pdmBuffer, uint32_t* pcmData){
 	uint64_t* pdmFrameBuffer = pdmBuffer;
 
@@ -390,8 +388,8 @@ Il ne faut pas oublier que c'est échantillons sont ajoutés au tableau contenan
 }
 </code></pre>
 <h3 id="arrêt-de-lenregistrement"><a class="header" href="#arrêt-de-lenregistrement">Arrêt de l’enregistrement</a></h3>
-<p>Les données d’un demi <em>DMA</em> sont maintenant convertissables à l’aide de notre fonction, mais il reste un problème. On à un tableau <code>pcmData</code> qui à une longueur de 48 000 échantillons, soit 1 seconde d’enregistrement avec une fréquence d’échantillonnage de 48 kHz. Si <code>pcmData</code> est plein, dans ce cas il faut pouvoir arrêter l’enregistrement.</p>
-<p>Ce qui nous permet d’avoir le code suivant :</p>
+<p>Les données d’un demi <em>DMA</em> sont maintenant convertibles grâce à notre fonction, mais il reste un problème. On a un tableau <code>pcmData</code> qui a une longueur de 48 000 échantillons, soit une seconde d’enregistrement avec une fréquence d’échantillonnage de 48 kHz. Si <code>pcmData</code> est plein, dans ce cas il faut pouvoir arrêter l’enregistrement.</p>
+<p>On a donc le code suivant :</p>
 <pre><code class="language-c">while (recording){
 	if(half){
 		half = 0;
@@ -407,10 +405,10 @@ Il ne faut pas oublier que c'est échantillons sont ajoutés au tableau contenan
 <div style="break-before: page; page-break-before: always;"></div><h1 id="diffusion"><a class="header" href="#diffusion">Diffusion</a></h1>
 <p>La dernière étape de notre chaine de traitement consiste à diffuser le son enregistré précédemment dans la mémoire de notre STM32. Pour ce faire, nous devons piloter le DAC via le DMA et générer le signal vers une sortie audio, casque, haut-parleurs... </p>
 <h2 id="dac"><a class="header" href="#dac">DAC</a></h2>
-<p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc.</p>
+<p>Le DAC ou Digital-to-Analog Converter est un composant matériel qui permet de convertir des signaux numériques en signaux analogiques. Sur une carte STM32, il peut être utilisé pour produire des signaux analogiques pour des applications telles que la génération de formes d'onde, la synthèse audio, le contrôle de moteurs, etc.</p>
 <p>Le DAC peut être configuré pour fonctionner avec différentes résolutions (8, 10, 12 bits), des tensions de référence internes ou externes, et des modes de sortie de signal (unipolaire ou bipolaire). </p>
 <h2 id="amplification-du-signal-pcm"><a class="header" href="#amplification-du-signal-pcm">Amplification du signal PCM</a></h2>
-<p>Le signal de sortie peut être amplifié pour rehausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons déterminé précédemment un facteur décimation de 64, donc nos échantillons on une valeur allant de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière max de 4096. On peut donc déterminer la valeur max du gain par le calcul suivant.</p>
+<p>Le signal de sortie peut être amplifié pour réhausser le signal. On utilise un amplificateur en spécifiant un gain. Pour déterminer ce dernier, on s'appuie sur la partie décimation. Nous avons déterminé précédemment un facteur décimation de 64, donc nos échantillons on une valeur allant de 0 à 64. Or le DAC a une résolution fixée à 12 bits ce qui impose une valeur entière maximum de 4096. On peut donc déterminer la valeur maximum du gain par le calcul suivant.</p>
 <p>$$ Gain_{max} = \frac{4096}{64} = 64$$</p>
 <h2 id="mise-en-pratique-2"><a class="header" href="#mise-en-pratique-2">Mise en pratique</a></h2>
 <h3 id="configuration-du-dac"><a class="header" href="#configuration-du-dac">Configuration du DAC</a></h3>
@@ -421,13 +419,13 @@ Il ne faut pas oublier que c'est échantillons sont ajoutés au tableau contenan
 </p>
 <p>Nous avons configuré notre SAI pour une acquisition d'un signal sonore avec une <em>fe</em> de 48 kHz, il est donc nécessaire de conserver cette configuration et de la reproduire pour le DAC. </p>
 <p>$$ (PSC+1)(ARR+1)=\frac{CLK_{freq}}{OutputFrequency}=\frac{80MHz}{48kHz}=1666.66$$</p>
-<p>Après calcul, si on choisis une fréquence de 80Mhz, il nous faut un <em>Auto Reload Register</em> de 1665 et un <em>Prescaler</em> de 0 pour obtenir une fréquence d'échantillonage de 48kHz</p>
+<p>Après calcul, si on choisit une fréquence de 80Mhz, il nous faut un <em>Auto Reload Register</em> de 1665 et un <em>Prescaler</em> de 0 pour obtenir une fréquence d'échantillonage de 48kHz</p>
 <p><img src="diffusion/./img/clk_timer.png" alt="" /></p>
 <p align="center">
   <img src="diffusion/./img/timer2.png" alt="" width="50%" height="50%">
 </p>
 <h3 id="ajout-de-lamplification"><a class="header" href="#ajout-de-lamplification">Ajout de l'amplification</a></h3>
-<p>Avant de générer le signal, nous avons fait le choix de l'amplifier en fixant la valeur de gain à 80, qui est un bon compromis pour rehausser le niveau du signal en minimisant la saturation.</p>
+<p>Avant de générer le signal, nous avons fait le choix de l'amplifier en fixant la valeur de gain à 80, ce qui est un bon compromis pour réhausser le niveau du signal en minimisant la saturation.</p>
 <pre><code class="language-c">for (int i = 0; i &lt; PCM_NB_SAMPLE; i++){
  	  pcmData[i] = pcmData[i] * GAIN;
    }
@@ -446,13 +444,13 @@ Il ne faut pas oublier que c'est échantillons sont ajoutés au tableau contenan
     /* USER CODE END WHILE */
   }
 </code></pre>
-<p>Si l'utilisateur appuie sur le bouton pin0 de la carte, on lance la diffusion du signal avec la fonction <code>HAL_DAC_Start_DMA()</code>. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.</p>
+<p>Si l'utilisateur appuie sur le bouton <em>pin0</em> de la carte, on lance la diffusion du signal avec la fonction <code>HAL_DAC_Start_DMA()</code>. En paramètre, on a renseigné le channel, la data, le nombre d'échantillons et la résolution de notre DAC.</p>
 <p>Le signal se joue sur <code>HAL_Delay(NB_SEC_OUTPUT*1000);</code>, ce qui représente la durée du signal enregistré avant de se couper avec la fonction <code>DAC HAL_DAC_Stop_DMA()</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="filtrage"><a class="header" href="#filtrage">Filtrage</a></h1>
-<p>Comme on peut le constater sur l'image suivante, un signal <em>PDM</em> à une fréquence d'échantillonnage beaucoup plus importante qu'un signal <em>PCM</em>.</p>
+<p>Comme on peut le constater sur l'image suivante, un signal <em>PDM</em> a une fréquence d'échantillonnage beaucoup plus importante qu'un signal <em>PCM</em>.</p>
 <p><img src="filtrage/./img/pdm_pcm.png" alt="" /></p>
-<p>Réaliser une décimation pour réduire cette fréquence et convertir notre signal <em>PCM</em> permet d'obtenir un signal audible, mais pas parfait. Dans un premier temps on peut constater qu'il y aura une perte de certaine information, mais le principal problème problème et la conservation de certaine de c'est haute fréquence qui peuvent causer du bruit ou encore une qualité type talki-walki. </p>
-<p>L'objectif de cette partie consiste donc à obtenir un signal de meilleure qualité, mais pour ce faire il est important de comprendre correctement les étapes pour procéder au filtrage à l'aide de Matlab.</p>
+<p>Réaliser une décimation pour réduire cette fréquence et convertir notre signal <em>PCM</em> permet d'obtenir un signal audible, mais pas parfait. Dans un premier temps on peut constater qu'il y aura une perte de certaine information, mais le principal problème et la conservation de certaine de ces hautes fréquences qui peuvent causer du bruit ou encore une qualité type talkie-walkie. </p>
+<p>L'objectif de cette partie consiste donc à obtenir un signal de meilleure qualité, mais pour ce faire, il est important de comprendre correctement les étapes pour procéder au filtrage à l'aide de Matlab.</p>
 <h2 id="les-effets-dun-signal-pdm"><a class="header" href="#les-effets-dun-signal-pdm">Les effets d'un signal PDM</a></h2>
 <p>C'est étapes ne seront pas directement liées à notre projet, nous allons partir d'un enregistrement audio et nous allons le convertir en <em>PDM</em> pour comprendre les effets de cette modulation et comment les réduire.</p>
 <h3 id="lecture-dun-signal-audio"><a class="header" href="#lecture-dun-signal-audio">Lecture d'un signal audio</a></h3>
@@ -466,13 +464,13 @@ duree = N/fs
 </code></pre>
 <p><img src="filtrage/./img/bond_temp.png" alt="" /></p>
 <h3 id="conversion-du-signal-audio-vers-un-signal-pdm"><a class="header" href="#conversion-du-signal-audio-vers-un-signal-pdm">Conversion du signal audio vers un signal PDM</a></h3>
-<p>Il est nécessaire de réchantillonner notre signal. La fréquence actuelle ne correspond pas à celle que l'on utilise dans notre projet, une fréquence de <em>3.072MHz</em>.</p>
+<p>Il est nécessaire d'échantilloner à nouveau notre signal. La fréquence actuelle ne correspond pas à celle que l'on utilise dans notre projet, une fréquence de <em>3.072MHz</em>.</p>
 <pre><code class="language-c">fs_new = 3.072e6; 
 
 x_resampled = resample(x, fs_new, fs);
 </code></pre>
 <br>
-<p>Une fois qu'on a la bonne fréquence, on peut réaliser une modulation PDM à l'aide d'une fonction que nous avons réalisée, cette fonction est inspirée de l'algorithme donné par <a href="https://en.wikipedia.org/wiki/Pulse-density_modulation">Wikipédia</a>. </p>
+<p>Une fois que l'on a la bonne fréquence, on peut réaliser une modulation PDM à l'aide d'une fonction que nous avons réalisée, cette fonction est inspirée de l'algorithme donné par <a href="https://en.wikipedia.org/wiki/Pulse-density_modulation">Wikipédia</a>. </p>
 <pre><code class="language-c">function result = modulation_PDM(s, qe)
     s_mod = zeros(1, length(s));
     for i = 1:length(s)
@@ -493,12 +491,12 @@ x_resampled = resample(x, fs_new, fs);
 <p><img src="filtrage/./img/pdm.png" alt="" /></p>
 <ul>
 <li>Orange → Signal PDM</li>
-<li>Bleu → Signal Audio suréchantillonnée</li>
+<li>Bleu → Signal Audio sur-échantillonné</li>
 </ul>
-<p>On remarque facilement que le signal PDM à majoritairement des hautes fréquences comparées au signal audio suréchantillonnée. De plus on ne reconnaît même plus notre allure temporelle que nous avions précédemment.</p>
+<p>On remarque facilement que le signal PDM a majoritairement des hautes fréquences comparé au signal audio sur-échantillonné. De plus, on ne reconnaît même plus notre allure temporelle que nous avions précédemment.</p>
 <h3 id="traitement-du-signal-pdm"><a class="header" href="#traitement-du-signal-pdm">Traitement du signal PDM</a></h3>
-<p>Dans notre projet, nous avons utilisé une décimation pour réaliser la conversion PDM → PCM. Ici on va optimiser ce processus que nous avons simplifié, à l'aide d'un filtre passe-bas. On remarque au final que nous allons réaliser ce qui est préconisé par STM (cf <a href="filtrage/../conversion/conversion.html">conversion</a>). </p>
-<p>Pour ce faire, on va utiliser un filtre passe-bas à moyenne glissante sur 64 points ainsi que d'un sous échantillonnage avec un facteur de 64, ce qui correspond également au facteur décimation que nous avons utilisé dans notre projet.</p>
+<p>Dans notre projet, nous avons utilisé une décimation pour réaliser la conversion PDM → PCM. Ici, on va optimiser ce processus que nous avons simplifié, à l'aide d'un filtre passe-bas. On remarque au final que nous allons réaliser ce qui est préconisé par STM (cf <a href="filtrage/../conversion/conversion.html">conversion</a>). </p>
+<p>Pour ce faire, on va appliquer un filtre passe-bas à moyenne glissante sur soixante-quatre points, ainsi qu'un sous échantillonnage avec un facteur de 64, ce qui correspond également au facteur décimation que nous avons utilisé dans notre projet.</p>
 <p>$$ \frac{3.072MHz}{64} = 48kHz$$</p>
 <p>On procède donc au filtrage de la manière suivante:</p>
 <pre><code class="language-c">nb_points = 64;
@@ -512,9 +510,9 @@ x_filtered = filter(filtre, 1, x_mod);
 <li>Orange → Signal PDM traité</li>
 <li>Bleu → Signal Audio</li>
 </ul>
-<p>Grâce au filtre nous avons retrouvé l'allure de notre signal audio, mais la représentation fréquentielle démontre que nous avons toujours une présence importante des hautes fréquences. Comme expliqué plusôt, c'est les hautes fréquences obtenues à la suite de notre décimation qui réduise la qualité de notre signal. On constante donc que c'est dernier sont bel et bien présente, l'objectif va donc être de les filtrer.</p>
+<p>Grâce au filtre nous avons retrouvé l'allure de notre signal audio, mais la représentation fréquentielle démontre que nous avons toujours une présence importante des hautes fréquences. Comme expliqué plus tôt, ce sont les hautes fréquences obtenues à la suite de notre décimation qui réduisent la qualité de notre signal. On constate donc que ces dernières sont bel et bien présentes, l'objectif va donc être de les filtrer.</p>
 <h3 id="filtrage-dun-signal-pdm"><a class="header" href="#filtrage-dun-signal-pdm">Filtrage d'un signal PDM</a></h3>
-<p>À présent l'objectif est donc de supprimer les composantes fréquentielles haute-fréquence du signal. Pour ce faire nous allons utiliser un filtre passe-bas.</p>
+<p>À présent l'objectif est donc de supprimer les composantes fréquentielles haute-fréquence du signal. Pour ce faire, nous allons utiliser un filtre passe-bas.</p>
 <h4 id="design-du-filtre"><a class="header" href="#design-du-filtre">Design du filtre</a></h4>
 <p>Nous allons utiliser les données précédemment obtenues suite aux analyses pour designer notre filtre à l'aide de l'outil Matlab: <em>filterDesigner</em></p>
 <p><img src="filtrage/./img/fda.png" alt="" /></p>
@@ -548,10 +546,10 @@ x_filtered_2 = filter(fir_filter, 1, x_filtered);
 </ul>
 <p>On remarque facilement les effets du filtre, nous avons supprimé les hautes fréquences provenant du signal PDM tout en préservant l'allure du signal audio. Si on écoute les trois audios, une nette amélioration est à noter. </p>
 <h2 id="filtrage-de-notre-signal-pcm"><a class="header" href="#filtrage-de-notre-signal-pcm">Filtrage de notre signal PCM</a></h2>
-<p>Maintenant que nous avons calculé un filtre qui permet de filtrer les hautes fréquences provenant de notre signal PDM, nous pouvons reproduire ce code dans notre projet en utilisant les paramètres données par matlab. L'objectif est donc de réaliser le schéma suivant</p>
+<p>Maintenant que nous avons calculé un filtre qui permet de filtrer les hautes fréquences provenant de notre signal PDM, nous pouvons reproduire ce code dans notre projet en utilisant les paramètres donnés par matlab. L'objectif est donc de réaliser le schéma suivant :</p>
 <p><img src="filtrage/./img/fir.png" alt="" />
 <img src="filtrage/./img/fir2.png" alt="" /></p>
-<p>Pour ce faire nous pouvons réaliser une fonction qui va nous permettre de calculer les coef du filtre FIR et une autre pour appliquer le filtre sur chaque échantillon PCM</p>
+<p>Pour ce faire nous pouvons réaliser une fonction qui va nous permettre de calculer les coefficients du filtre FIR et une autre pour appliquer le filtre sur chaque échantillon PCM.</p>
 <pre><code class="language-c">#define FILTER_CUTOFF_FREQUENCY 6000
 #define FILTER_SAMPLING_FREQUENCY 48000
 #define FILTER_NB_COEF 64
@@ -580,7 +578,7 @@ void FIR(float* FIRcoef, int nbCoef, uint8_t* pcmData){
 	}
 }
 </code></pre>
-<p>Un appel à nos fonctions nous permttront d'obtenir notre signal PCM filtré, les hautes fréquences seront donc retirées.</p>
+<p>Un appel à nos fonctions nous permettront d'obtenir notre signal PCM filtré, les hautes fréquences seront donc retirées.</p>
 <pre><code class="language-c">float FIRcoef[FILTER_NB_COEF];
 calcFIR(FIRcoef, FILTER_NB_COEF, FILTER_CUTOFF_FREQUENCY, FILTER_SAMPLING_FREQUENCY);
 FIR(FIRcoef, FILTER_NB_COEF, pcmData);
@@ -590,9 +588,9 @@ FIR(FIRcoef, FILTER_NB_COEF, pcmData);
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="exemple"><a class="header" href="#exemple">Exemple</a></h1>
 <blockquote>
-<p>Si certaine capture d'écran ne correspond pas avec le MCU du <em>STM32F4290I-DISC1</em>, c'est parce que certain de c'est exemples ont été réaliser sur une nucleo-64. Le principe de fonctionnement et de configuration reste le même, seuls les pins sont différents.</p>
+<p>Si certaines captures d'écran ne correspondent pas avec le MCU du <em>STM32F4290I-DISC1</em>, c'est parce que certain de ces exemples ont été réalisé sur une nucleo-64. Les principes de fonctionnement et de configuration restent les mêmes, seuls les pins sont différents.</p>
 </blockquote>
-<p>Pour débuter ce projet, nous avons, pu découvrir la carte STM32 et s'est différentes possibilités à l'aide d'exemples:</p>
+<p>Pour débuter ce projet, nous avons, pu découvrir la carte STM32 et ses différentes possibilités à l'aide d'exemples:</p>
 <ul>
 <li><a href="exemple/./toggle_led/toggle_led.html">Toggle Led</a></li>
 <li><a href="exemple/./pushbutton_led/pushbutton_led.html">Pushbutton Led</a></li>
@@ -617,7 +615,7 @@ while (1)
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="clignotement-dune-led-avec-un-bouton"><a class="header" href="#clignotement-dune-led-avec-un-bouton">Clignotement d'une LED avec un bouton</a></h1>
 <blockquote>
-<p><em>On considère que la configuration de la LED à déjà était faite avec l'exemple 'toggle_led'</em></p>
+<p><em>On considère que la configuration de la LED a déjà été faite avec l'exemple 'toggle_led'</em></p>
 </blockquote>
 <h3 id="configuration-de-la-pin-connectée-au-bp"><a class="header" href="#configuration-de-la-pin-connectée-au-bp">Configuration de la pin connectée au BP</a></h3>
 <p><img src="exemple/pushbutton_led/./img/PC13.png" alt="" /></p>
@@ -638,7 +636,7 @@ while (1)
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="uart---affichage-dun-message-à-lappui-du-bouton"><a class="header" href="#uart---affichage-dun-message-à-lappui-du-bouton">UART - Affichage d'un message à l'appui du bouton</a></h1>
 <blockquote>
-<p><em>On considère que la configuration de la LED et du BP à déjà était faite avec l'exemple 'pushbutton_led'</em></p>
+<p><em>On considère que la configuration de la LED et du BP a déjà été faite avec l'exemple 'pushbutton_led'</em></p>
 </blockquote>
 <h3 id="configuration-de-luart"><a class="header" href="#configuration-de-luart">Configuration de l'UART</a></h3>
 <p><img src="exemple/pushbutton_uart/./img/uart_conf.png" alt="" /></p>
@@ -677,20 +675,20 @@ while (1)
 <p><img src="exemple/wave_gen_sinus/./img/dac_dma.png" alt="" /></p>
 <h3 id="configuration-du-timer"><a class="header" href="#configuration-du-timer">Configuration du Timer</a></h3>
 <p><img src="exemple/wave_gen_sinus/./img/timer.png" alt="" /></p>
-<p>Pour choisir les paramétres du timers pour une fréquence voulu on peut appliquer les formules suivantes :</p>
+<p>Pour choisir les paramètres du timers pour une fréquence voulue on peut appliquer les formules suivantes :</p>
 <p>$$ TriggerFrequency = OutputWaveFrequency * Ns$$ </p>
 <p>avec <em>Ns</em> le nombre de sample de notre signal</p>
 <p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency}$$</p>
 <h4 id="exemple-pour-un-sinus-avec-une-lookup-table-de-128-samples"><a class="header" href="#exemple-pour-un-sinus-avec-une-lookup-table-de-128-samples">Exemple: <em>Pour un sinus avec une lookup table de 128 samples</em></a></h4>
-<p><strong>Si l'on souhaite une freq de 1Khz:</strong></p>
+<p><strong>Si l'on souhaite une fréquence de 1Khz:</strong></p>
 <p>$$ TriggerFrequency = OutputWaveFrequency * Ns = 1.10^3 * 128 = 128.10^3$$ </p>
 <p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{128.10^3} = 625$$</p>
-<p>On peut donc choisir un prescaler de 0 est un période de 625.</p>
+<p>On peut donc choisir un prescaler de 0 est une période de 625.</p>
 <p><img src="exemple/wave_gen_sinus/./img/1k.jpg" alt="" /></p>
-<p><strong>Si l'on souhaite une freq de 500Hz:</strong></p>
+<p><strong>Si l'on souhaite une fréquence de 500Hz:</strong></p>
 <p>$$ TriggerFrequency = OutputWaveFrequency * Ns = 500 * 128 = 64.10^3$$ </p>
 <p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{64.10^3} = 1250$$</p>
-<p>On peut donc choisir un prescaler de 0 est un période de 1250. On sait que 1kHz c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter un prescaler de 2.</p>
+<p>On peut donc choisir un prescaler de 0 est une période de 1250. On sait que 1kHz, c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter par le suite un prescaler de 2.</p>
 <p><img src="exemple/wave_gen_sinus/./img/500.jpg" alt="" /></p>
 <h3 id="code"><a class="header" href="#code">Code</a></h3>
 <pre><code class="language-c">  /* USER CODE BEGIN 2 */

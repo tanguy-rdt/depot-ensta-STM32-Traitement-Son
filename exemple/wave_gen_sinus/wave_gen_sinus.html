@@ -156,20 +156,20 @@
 <p><img src="./img/dac_dma.png" alt="" /></p>
 <h3 id="configuration-du-timer"><a class="header" href="#configuration-du-timer">Configuration du Timer</a></h3>
 <p><img src="./img/timer.png" alt="" /></p>
-<p>Pour choisir les paramétres du timers pour une fréquence voulu on peut appliquer les formules suivantes :</p>
+<p>Pour choisir les paramètres du timers pour une fréquence voulue on peut appliquer les formules suivantes :</p>
 <p>$$ TriggerFrequency = OutputWaveFrequency * Ns$$ </p>
 <p>avec <em>Ns</em> le nombre de sample de notre signal</p>
 <p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency}$$</p>
 <h4 id="exemple-pour-un-sinus-avec-une-lookup-table-de-128-samples"><a class="header" href="#exemple-pour-un-sinus-avec-une-lookup-table-de-128-samples">Exemple: <em>Pour un sinus avec une lookup table de 128 samples</em></a></h4>
-<p><strong>Si l'on souhaite une freq de 1Khz:</strong></p>
+<p><strong>Si l'on souhaite une fréquence de 1Khz:</strong></p>
 <p>$$ TriggerFrequency = OutputWaveFrequency * Ns = 1.10^3 * 128 = 128.10^3$$ </p>
 <p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{128.10^3} = 625$$</p>
-<p>On peut donc choisir un prescaler de 0 est un période de 625.</p>
+<p>On peut donc choisir un prescaler de 0 est une période de 625.</p>
 <p><img src="./img/1k.jpg" alt="" /></p>
-<p><strong>Si l'on souhaite une freq de 500Hz:</strong></p>
+<p><strong>Si l'on souhaite une fréquence de 500Hz:</strong></p>
 <p>$$ TriggerFrequency = OutputWaveFrequency * Ns = 500 * 128 = 64.10^3$$ </p>
 <p>$$ (PSC+1)(ARR+1) = \frac{F_{CPU}}{TriggerFrequency} = \frac{80.10^6}{64.10^3} = 1250$$</p>
-<p>On peut donc choisir un prescaler de 0 est un période de 1250. On sait que 1kHz c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter un prescaler de 2.</p>
+<p>On peut donc choisir un prescaler de 0 est une période de 1250. On sait que 1kHz, c'est deux fois 500Hz. Au lieu de refaire le calcul on aurait simplement aussi pu garder une période de 625 et ajouter par le suite un prescaler de 2.</p>
 <p><img src="./img/500.jpg" alt="" /></p>
 <h3 id="code"><a class="header" href="#code">Code</a></h3>
 <pre><code class="language-c">  /* USER CODE BEGIN 2 */
