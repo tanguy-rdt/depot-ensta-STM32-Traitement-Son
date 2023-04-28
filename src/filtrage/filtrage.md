@@ -148,4 +148,49 @@ On remarque facilement les effets du filtre, nous avons supprimé les hautes fr�
 
 ## Filtrage de notre signal PCM 
 
-Maintenant que nous avons calculé un filtre qui permet de filtrer les hautes fréquences provenant de notre signal PDM, nous pouvons reproduire ce code dans notre projet en utilisant les paramètres données par matlab.
+Maintenant que nous avons calculé un filtre qui permet de filtrer les hautes fréquences provenant de notre signal PDM, nous pouvons reproduire ce code dans notre projet en utilisant les paramètres données par matlab. L'objectif est donc de réaliser le schéma suivant
+
+![](./img/fir.png)
+![](./img/fir2.png)
+
+Pour ce faire nous pouvons réaliser une fonction qui va nous permettre de calculer les coef du filtre FIR et une autre pour appliquer le filtre sur chaque échantillon PCM
+
+```c
+#define FILTER_CUTOFF_FREQUENCY 6000
+#define FILTER_SAMPLING_FREQUENCY 48000
+#define FILTER_NB_COEF 64
+
+void calcFIR(float* FIRcoef, int nbCoef, float fc, float fe){
+    float normalizedFc = 2.0f * PI * fc / fe;
+    float sinc, hamming;
+    for (int coefN = 0; coefN < nbCoef; coefN++) {
+        if (coefN == (nbCoef-1)/2) {
+        	FIRcoef[coefN] = normalizedFc / PI;
+        } else {
+            sinc = sinf(normalizedFc * (coefN - (nbCoef-1)/2)) / (PI * (coefN - (nbCoef-1)/2));
+            hamming = 0.54f - 0.46f * cosf(2.0f * PI * coefN / (nbCoef-1));
+            FIRcoef[coefN] = sinc * hamming;
+        }
+    }
+}
+
+void FIR(float* FIRcoef, int nbCoef, uint8_t* pcmData){
+	for (int pcmIndex = 0; pcmIndex < PCM_NB_SAMPLE; pcmIndex++){
+		float sum = 0;
+		for(int nCoef = nbCoef; nCoef < nbCoef; nCoef++){
+			sum += pcmData[pcmIndex+nCoef] * FIRcoef[nCoef];
+		}
+		pcmData[pcmIndex] = (uint32_t)sum;
+	}
+}
+```
+
+Un appel à nos fonctions nous permttront d'obtenir notre signal PCM filtré, les hautes fréquences seront donc retirées.
+
+```c
+float FIRcoef[FILTER_NB_COEF];
+calcFIR(FIRcoef, FILTER_NB_COEF, FILTER_CUTOFF_FREQUENCY, FILTER_SAMPLING_FREQUENCY);
+FIR(FIRcoef, FILTER_NB_COEF, pcmData);
+```
+
+> _Il est important de noter que nous n'avons pas pu tester cette dernière version de notre projet_
