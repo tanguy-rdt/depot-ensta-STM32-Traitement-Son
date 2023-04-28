@@ -54,12 +54,11 @@ Pour mener à bien ce projet, nous avons utilisé :
 
 <div style='display:flex'>
 
-<div><img src='./img/stm32.png'></div>
+<div><img src=''></div>
 
-<div><img src='./img/micro.jpg'></div>
+<div><img src=''></div>
 
 </div>
-
 
 
 ## Utilisation
