@@ -54,7 +54,7 @@ Pour mener à bien ce projet, nous avons utilisé :
 
 <p align="center">
   <img src="./img/stm32.png" alt="stm32" width="40%" height="40%" align="center">
-  <img src="./img/micro.png" alt="micro" width="40%" height="40%" align="center">
+  <img src="./img/micro.jpg" alt="micro" width="40%" height="40%" align="center">
 </p>
 
 
