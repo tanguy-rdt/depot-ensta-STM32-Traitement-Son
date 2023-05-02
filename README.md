@@ -5,7 +5,7 @@
 
 > La documentation du projet est disponible [ici](https://tanguy-rdt.github.io/depot-ensta-STM32-Traitement-Son/presentation/presentation.html)
 >
-> _Si le format html n'est plus disponible, les sources sont dans le dossier 'doc'_
+> _Si le format html n'est plus disponible, les sources md sont sur la branche 'gh-page-src' et html sur la branche 'gh-page'_
 
 
 
